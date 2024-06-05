@@ -16,6 +16,10 @@ def largest( arr, n):
     arr.sort()
     return arr[n-1]
 
+def largest( arr, n):
+    arr.sort(reverse=True)
+    return arr[0]
+
 C++ Solution:
 Sol I:
 
