@@ -8,9 +8,6 @@ Output:
 Explanation:
 The largest element of given array is 90.
 
-
-
-
 Brute Force :
 
 Python Sol:
@@ -88,3 +85,13 @@ public:
         
     }
 }; 
+
+
+Loop Approach:
+
+def largest( arr, n):
+    max = arr[0]
+    for i in range(0, n):
+        if (max < arr[i]):
+            max = arr[i]
+    return max
