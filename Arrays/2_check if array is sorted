@@ -3,3 +3,25 @@ Problem Statement: Given an array of size n, write a program to check if the giv
 Note: Two consecutive equal values are considered to be sorted.
 
 https://leetcode.com/problems/check-if-array-is-sorted-and-rotated/
+
+class Solution:
+    def check(self, nums: List[int]) -> bool:
+        n=len(nums)
+        count_rotations = 0
+        for i in range(n):
+            if nums[i] > nums[(i + 1) %n ]:
+                count_rotations += 1
+        # Check if the array is rotated sorted
+        return count_rotations <= 1
+
+* with reverse index
+
+class Solution:
+    def check(self, nums: List[int]) -> bool:
+        n=len(nums)
+        count_rotations = 0
+        for i in range(n-1,-1,-1):
+            if nums[i] < nums[(i - 1) %n ]:
+                count_rotations += 1
+        # Check if the array is rotated sorted
+        return count_rotations <= 1
