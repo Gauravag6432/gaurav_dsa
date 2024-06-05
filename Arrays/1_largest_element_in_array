@@ -1,0 +1,71 @@
+# Largest element in array
+
+Brute Force 
+Sol I:
+
+class Solution {
+public:
+    int largest(vector<int>& arr,int n) {
+        sort(arr.begin(), arr.end());
+        return arr[n-1];
+    }
+};
+
+Sol II:
+
+class Solution {
+public:
+    int largest(vector<int>& arr,int n) {
+        sort(arr.begin(), arr.end());
+        return arr.back();         
+    }
+}; 
+
+Sol III:
+
+class Solution {
+public:
+    int largest(vector<int>& arr,int n) {
+        sort(arr.begin(), arr.end());
+        return arr[arr.size()-1];
+    }
+}; 
+
+Sol IV:
+
+class Solution {
+public:
+    int largest(vector<int>& arr,int n) {
+        sort(arr.begin(),arr.end(),greater<int>());
+        return arr[0];        
+    }
+}; 
+
+Sol V:
+
+class Solution {
+public:
+    int largest(vector<int>& arr,int n) {
+        
+        vector<int> arr1;
+        copy(arr.begin(), arr.end(), back_inserter(arr1));
+        sort( arr1.begin(), arr1.end(), greater<int>() );
+        return arr1[0];
+        
+    }
+}; 
+
+
+Sol VI:
+
+class Solution {
+public:
+    int largest(vector<int>& arr,int n) {
+        
+        vector<int> arr1;
+        copy(arr.begin(), arr.end(), back_inserter(arr1));
+        sort( arr1.begin(), arr1.end() );
+        return arr1[n-1];
+        
+    }
+}; 
