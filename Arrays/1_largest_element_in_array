@@ -1,6 +1,25 @@
 # Largest element in array
+Given an array A[] of size n. The task is to find the largest element in it.
+Input:
+n = 5
+A[] = {1, 8, 7, 56, 90}
+Output:
+90
+Explanation:
+The largest element of given array is 90.
 
-Brute Force 
+
+
+
+Brute Force :
+
+Python Sol:
+
+def largest( arr, n):
+    arr.sort()
+    return arr[n-1]
+
+C++ Solution:
 Sol I:
 
 class Solution {
