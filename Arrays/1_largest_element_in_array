@@ -11,19 +11,27 @@ Output:
 Explanation:
 The largest element of given array is 90.
 
+Loop Approach:
+
+def largest( arr, n):
+    max = arr[0]
+    for i in range(0, n):
+        if (max < arr[i]):
+            max = arr[i]
+    return max
+
 Brute Force :
-
-Python Sol:
-
+    A. Python Sol:
+1.
 def largest( arr, n):
     arr.sort()
     return arr[n-1]
-
+2.
 def largest( arr, n):
     arr.sort(reverse=True)
     return arr[0]
 
-C++ Solution:
+    B. C++ Solution:
 Sol I:
 
 class Solution {
@@ -91,14 +99,4 @@ public:
         return arr1[n-1];
         
     }
-}; 
-
-
-Loop Approach:
-
-def largest( arr, n):
-    max = arr[0]
-    for i in range(0, n):
-        if (max < arr[i]):
-            max = arr[i]
-    return max
+};
