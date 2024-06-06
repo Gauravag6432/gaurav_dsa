@@ -11,3 +11,4 @@ if __name__ == '__main__':
     arr = [1, 2, 4, 6, 7, 5]
     n = len(arr)
     getElements(arr, n)
+okok
