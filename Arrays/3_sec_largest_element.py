@@ -1,3 +1,5 @@
+Find Second Smallest and Second Largest Element in an array
+
 def getElements(arr, n):
     if n == 0 or n == 1:
         print(-1, -1)  # edge case when only one element is present in array
