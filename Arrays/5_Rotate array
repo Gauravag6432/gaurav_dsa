@@ -1,25 +1,17 @@
 Given an integer array nums,
 rotate the array to the right by k steps, where k is non-negative.
 
-lass Solution:
+class Solution:
     def rotate(self, nums: List[int], k: int) -> None:
         n=len(nums)
+        k=k%n
         num = nums.copy()
         for i in range(0,k):
             nums[i]=nums[n+i-k]
         for i in range(k,n):
             nums[i]=num[i-k]
 
-        # temp=[]
-        # for i in range(n-k+1,n):
-        #     temp.append(nums[i])
-
-        # for i in range(n-k+1):
-        #     nums[i+k]=nums[i]
-        
-        # for i in ramge(0,k):
-        #     nums[i]=temp[i]
-
+        #k=k%n
         # temp = nums[n-k:] + nums[0:n-k]
         # for i in range(n):
         #     nums[i]=temp[i]
