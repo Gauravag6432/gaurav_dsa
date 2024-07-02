@@ -27,3 +27,45 @@ class Solution:
                 if nums[i]!= nums[i+1]:
                     return nums[i]
         return nums[n-1]
+
+#soln 1 Brute force
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        n=len(nums)
+        for i in range(n):
+            num= nums[i]
+            count=0
+            for j in range(n):
+                if num == nums[j]:
+                    count+=1
+            if count == 1:
+                return num
+        return -1
+
+#soln 2 Better (Array hashing)
+ n = len(arr)
+maxi = max(arr)
+hash = [0] * (maxi + 1)
+for num in arr:
+    hash[num] += 1
+for num in arr:
+    if hash[num] == 1:
+        return num
+
+#soln 3 Better (Hashing using map data structure)
+n = len(arr)
+hashmap = {}
+for num in arr:
+    hashmap[num] = hashmap.get(num, 0) + 1
+for num, count in hashmap.items():
+    if count == 1:
+        return num
+return -1
+
+#soln 4 Best (Using XOR)
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        xorr = 0
+        for num in nums:
+            xorr ^= num
+        return xorr
