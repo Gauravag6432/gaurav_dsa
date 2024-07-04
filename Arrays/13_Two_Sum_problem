@@ -21,10 +21,41 @@ class Solution:
         for i in range(n):
             num1=nums[i]
             for j in range(i+1,n):
-                if i!=j:
-                    if nums[i]+nums[j]==target:
-                        return i , j
-                        break
+                if nums[i]+nums[j]==target:
+                    return i , j
+                    break
 
-#
+#soln 2 (uning hash map)
 
+class Solution(object):
+    def twoSum(self, nums, target):
+        n=len(nums)
+        mpp = {}
+        for i in range(n):
+            num = nums[i]
+            more_needed = target - num
+            if more_needed in mpp:
+                return [mpp[more_needed], i]
+            mpp[num] = i
+        return [-1, -1]
+
+#soln 3 (using 2 pointer, but doesn't return indexes)
+
+def two_sum(n, arr, target):
+    arr.sort()
+    left, right = 0, n - 1
+    while left < right:
+        sum = arr[left] + arr[right]
+        if sum == target:
+            return "YES"
+        elif sum < target:
+            left += 1
+        else:
+            right -= 1
+    return "NO"
+
+# Example usage
+n = 5
+arr = [1, 2, 4, 3, 6]
+target = 7
+print(two_sum(n, arr, target))  # Output: "YES"
