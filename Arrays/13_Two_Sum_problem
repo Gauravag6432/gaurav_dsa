@@ -25,7 +25,7 @@ class Solution:
                     return i , j
                     break
 
-#soln 2 (uning hash map)
+#soln 2 (using hash map)
 
 class Solution(object):
     def twoSum(self, nums, target):
