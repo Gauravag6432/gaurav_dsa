@@ -1,0 +1,77 @@
+ Given an array, print all the elements which are leaders. 
+ A Leader is an element that is greater than all of the elements on its right side in the array.
+Link:  https://www.geeksforgeeks.org/problems/leaders-in-an-array-1587115620/1
+
+Example 1:
+Input: arr = [4, 7, 1, 0]
+Output: 7 1 0
+Explanation: Rightmost element is always a leader. 7 and 1 are greater than the elements in their right side.
+
+#soln 1 (brute)
+1. Python--
+def leaders(self,n, arr):
+        ans = []
+        for i in range(n):
+            leader = True
+            for j in range(i+1, n):
+                if arr[j] > arr[i]:
+                    ans.append
+                    # If any element found is greater than current leader,
+                    # curr element is not the leader.
+                    leader = False
+                    break
+            # Push all the leaders in ans array.
+            if leader:
+                ans.append(arr[i])
+        return ans
+
+2. Java--
+ArrayList<Integer> ans= new ArrayList<>();
+  
+  for (int i = 0; i < n; i++) {
+    boolean leader = true;
+
+    //Checking whether arr[i] is greater than all 
+    //the elements in its right side
+    for (int j = i + 1; j < n; j++)
+      if (arr[j] > arr[i]) {
+          
+        // If any element found is greater than current leader
+        // curr element is not the leader.
+        leader = false;
+        break;
+      }
+    // Push all the leaders in ans array.
+    if (leader)
+    ans.add(arr[i]);
+  }
+  return ans; 
+}
+
+#soln 2 (optimal)
+Java:
+class Solution {
+    // Function to find the leaders in the array.
+    static ArrayList<Integer> leaders(int n, int arr[]) {
+        ArrayList<Integer> ans = new ArrayList<>();
+
+        // Last element of an array is always a leader,
+        // push into ans array.
+        int max = arr[n - 1];
+        ans.add(arr[n - 1]);
+
+        // Start checking from the end whether a number is greater
+        // than max no. from right, hence leader.
+        for (int i = n - 2; i >= 0; i--) {
+            if (arr[i] >= max) { // Use >= to include the last element if multiple elements are the same
+                ans.add(arr[i]);
+                max = arr[i];
+            }
+        }
+
+        // Sort the ans array before returning it.
+        ans.sort(Comparator.reverseOrder());
+        return ans;
+    }
+}
+
