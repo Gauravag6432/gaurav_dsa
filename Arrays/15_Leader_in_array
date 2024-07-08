@@ -48,8 +48,8 @@ ArrayList<Integer> ans= new ArrayList<>();
   return ans; 
 }
 
-#soln 2 (optimal)
-Java:
+#soln 2 (optimal) JAVA
+
 class Solution {
     // Function to find the leaders in the array.
     static ArrayList<Integer> leaders(int n, int arr[]) {
