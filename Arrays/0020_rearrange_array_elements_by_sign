@@ -1,0 +1,31 @@
+There’s an array ‘A’ of size ‘N’ with an equal number of positive and negative elements.
+Without altering the relative order of positive and negative elements, 
+you must return an array of alternately positive and negative values.
+
+https://leetcode.com/problems/rearrange-array-elements-by-sign/description/
+
+Example 1:
+Input: arr[] = {1,2,-4,-5}, N = 4
+Output:  1 -4 2 -5
+
+Explanation: Positive elements = 1,2  Negative elements = -4,-5
+To maintain relative ordering, 1 must occur before 2, and -4 must occur before -5.
+
+#1 my soln
+
+class Solution:
+    def rearrangeArray(self, nums: List[int]) -> List[int]:
+        n=len(nums)
+        num1=[]
+        num2=[]
+        num=[]
+        for i in range(n):
+            if nums[i] > 0 :
+                num1.append(nums[i])
+            else:
+                num2.append(nums[i])
+        for i in range((n//2)):
+            num.append(num1[i])
+            num.append(num2[i])
+        return num
+
