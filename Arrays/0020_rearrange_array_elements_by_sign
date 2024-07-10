@@ -27,5 +27,12 @@ class Solution:
         for i in range((n//2)):
             num.append(num1[i])
             num.append(num2[i])
-        return num
+    return num    
+# or can use 
+#    for i in range(len(pos)):
+#        A[2 * i] = pos[i]
+#    for i in range(len(neg)):
+#       A[2 * i + 1] = neg[i]
+  
+
 
