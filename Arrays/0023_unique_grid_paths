@@ -25,7 +25,7 @@ class Solution:
                 return countPaths(i + 1, j, n, m) + countPaths(i, j + 1, n, m)
         return countPaths(0, 0, m, n)
 
-#2 soln (mathamatical approach)
+#2 soln mathamatical approach (nCr)
 
 class Solution:
     def uniquePaths(self, m: int, n: int) -> int:
