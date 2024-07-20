@@ -1,3 +1,29 @@
+* Type 1
+Given the row number n. Print the n-th row of Pascal’s triangle.
+In Pascal's triangle, each number is the sum of the two numbers directly above it.
+
+Example
+Input: rowIndex = 3
+Output: [1,3,3,1]
+
+Problem link: https://leetcode.com/problems/pascals-triangle-ii/description/
+
+#soln
+
+class Solution:
+    def getRow(self, rowIndex: int) -> List[int]:
+        i=0
+        nums=[]
+        ans=1
+        nums.append(1)
+        for i in range(1,rowIndex+1):
+            ans=ans*rowIndex//i
+            nums.append(ans)
+            rowIndex-=1
+        return nums
+
+* Type 2
+
 Given an integer numRows, return the first numRows of Pascal's triangle.
 In Pascal's triangle, each number is the sum of the two numbers directly above it.
 
@@ -11,3 +37,21 @@ Result: 1
 
 Problem: https://leetcode.com/problems/pascals-triangle/description/
 
+#soln (using the previous function)
+
+class Solution:
+    def generate(self, numRows: int) -> List[List[int]]:
+        def getRow(rowIndex):
+            i=0
+            nums=[]
+            ans=1
+            nums.append(1)
+            for i in range(1,rowIndex+1):
+                ans=ans*rowIndex//i
+                nums.append(ans)
+                rowIndex-=1
+            return nums
+        num=[]
+        for i in range(numRows):
+            num.append(getRow(i))
+        return num
