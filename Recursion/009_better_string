@@ -1,0 +1,61 @@
+Given a pair of strings of equal lengths, Geek wants to find the better string. 
+The better string is the string having more number of distinct subsequences.
+If both the strings have equal count of distinct subsequence then return str1.
+
+
+Link: https://www.geeksforgeeks.org/problems/better-string/1
+
+Example 1:
+Input:
+str1 = "gfg", str2 = "ggg"
+Output: "gfg"
+Explanation: "gfg" have 6 distinct subsequences whereas "ggg" have 3 distinct subsequences. 
+
+Example 2:
+Input: str1 = "a", str2 = "b"
+Output: "a"
+Explanation: Both the strings have only 1 distinct subsequence. 
+
+#soln
+
+class Solution {
+        public static int countDistinctSubsequences(String s) {
+        int n = s.length();
+        int[] dp = new int[n + 1];
+        dp[0] = 1;  // An empty string has exactly one subsequence: the empty subsequence
+        
+        // Map to store the last occurrence of each character
+        Map<Character, Integer> lastOccurrence = new HashMap<>();
+        
+        for (int i = 1; i <= n; i++) {
+            char currentChar = s.charAt(i - 1);
+            dp[i] = 2 * dp[i - 1];  // Number of distinct subsequences without the current character
+            
+            // If the current character has appeared before, subtract the count of subsequences
+            // before its last occurrence
+            if (lastOccurrence.containsKey(currentChar)) {
+                int lastIndex = lastOccurrence.get(currentChar);
+                dp[i] -= dp[lastIndex - 1];
+            }
+            
+            // Update the last occurrence of the current character
+            lastOccurrence.put(currentChar, i);
+        }
+        
+        return dp[n];
+    }
+
+    public static String betterString(String str1, String str2) {
+        int count1 = countDistinctSubsequences(str1);
+        int count2 = countDistinctSubsequences(str2);
+        
+        if (count1 > count2) {
+            return str1;
+        } else if (count2 > count1) {
+            return str2;
+        } else {
+            return str1;  // If both counts are equal, return str1
+        }
+    }
+    
+}
