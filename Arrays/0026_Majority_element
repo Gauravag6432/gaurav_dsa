@@ -45,3 +45,5 @@ class Solution:
             if count==0:
                 ele=nums[i+1]
         return ele
+
+#4 Java Optimal
