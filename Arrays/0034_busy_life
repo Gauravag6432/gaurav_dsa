@@ -3,6 +3,10 @@ given the start and end time of each events.
 
 # link: https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/submissions/
 
+Example:
+Input: events= [[1,2],[2,3],[3,4],[1,2]]
+Output: 4
+
 #JAVA
 # soln 1
 
