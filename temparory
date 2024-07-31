@@ -1,223 +1,440 @@
-DP II Approach I:
+10.
 
 import java.util.Arrays;
-
-public class Solution {
-    private static final int MOD = 1000000007;
-
-    public int countPartitions(int n, int d, int[] arr) {
-        int totSum = Arrays.stream(arr).sum();
-
-        if (totSum - d < 0 || (totSum - d) % 2 == 1) {
-            return 0;
-        }
-
-        return findWays(arr, (totSum - d) / 2);
-    }
-
-    private int findWays(int[] num, int tar) {
-        int n = num.length;
-        int[][] dp = new int[n][tar + 1];
-
-        if (num[0] == 0) {
-            dp[0][0] = 2; // 2 cases - pick and not pick
-        } else {
-            dp[0][0] = 1; // 1 case - not pick
-        }
-
-        if (num[0] != 0 && num[0] <= tar) {
-            dp[0][num[0]] = 1; // 1 case - pick
-        }
-
-        for (int ind = 1; ind < n; ind++) {
-            for (int target = 0; target <= tar; target++) {
-                int notTaken = dp[ind - 1][target];
-                int taken = 0;
-                if (num[ind] <= target) {
-                    taken = dp[ind - 1][target - num[ind]];
-                }
-
-                dp[ind][target] = (notTaken + taken) % MOD;
-            }
-        }
-
-        return dp[n - 1][tar];
-    }
-
-    public static void main(String[] args) {
-        Solution solution = new Solution();
-        int[] arr = {1, 2, 3, 4, 5};
-        int n = arr.length;
-        int d = 3;
-        System.out.println(solution.countPartitions(n, d, arr)); // Example usage
-    }
-}
-
-DP II Approach II:
-
-public class Solution {
-    private static final int MOD = 1000000007;
-
-    public int countPartitions(int n, int d, int[] arr) {
-        int totSum = 0;
-        for (int num : arr) {
-            totSum += num;
-        }
-
-        if (totSum - d < 0 || (totSum - d) % 2 == 1) {
-            return 0;
-        }
-
-        return findWays(arr, (totSum - d) / 2);
-    }
-
-    private int findWays(int[] arr, int targetSum) {
-        int n = arr.length;
-        int[][] dp = new int[n + 1][targetSum + 1];
-
-        // Initialize the dp array
-        for (int i = 0; i <= n; i++) {
-            dp[i][0] = 1;
-        }
-
-        // Fill the dp array
-        for (int i = 1; i <= n; i++) {
-            for (int j = 0; j <= targetSum; j++) {
-                dp[i][j] = dp[i - 1][j] % MOD;
-                if (arr[i - 1] <= j) {
-                    dp[i][j] = (dp[i][j] + dp[i - 1][j - arr[i - 1]]) % MOD;
-                }
-            }
-        }
-
-        return dp[n][targetSum];
-    }
-
-    public static void main(String[] args) {
-        Solution solution = new Solution();
-        int[] arr = {1, 2, 3, 4, 5};
-        int n = arr.length;
-        int d = 3;
-        System.out.println(solution.countPartitions(n, d, arr)); // Example usage
-    }
-}
-
-III
-
-import java.util.*;
-
-public class Solution {
-
-    private static final int MOD = 1000000007;
-
-    public int countPartitions(int n, int d, int[] arr) {
-        int totSum = 0;
-        for (int num : arr) {
-            totSum += num;
-        }
-
-        if (totSum - d < 0 || (totSum - d) % 2 == 1) {
-            return 0;
-        }
-
-        int targetSum = (totSum - d) / 2;
-        int[][] dp = new int[n + 1][targetSum + 1];
-
-        // Initialize base cases
-        for (int i = 0; i <= n; i++) {
-            dp[i][0] = 1;
-        }
-
-        // Fill the dp array
-        for (int i = 1; i <= n; i++) {
-            for (int j = 0; j <= targetSum; j++) {
-                dp[i][j] = dp[i - 1][j] % MOD;
-                if (arr[i - 1] <= j) {
-                    dp[i][j] = (dp[i][j] + dp[i - 1][j - arr[i - 1]]) % MOD;
-                }
-            }
-        }
-
-        return dp[n][targetSum];
-    }
-
-    public static void main(String[] args) {
-        Solution solution = new Solution();
-        int[] arr = {1, 2, 3, 4, 5}; // Example input
-        int n = arr.length;
-        int d = 3;
-        System.out.println(solution.countPartitions(n, d, arr)); // Example usage
-    }
-}
-
-
-Dp I
-
-import java.util.*;
 
 public class Solution {
     
     private static final int MOD = 1000000007;
     private int[][] dp;
 
-    public int countPartitions(int n, int d, int[] num) {
-        int totSum = 0;
-        for (int value : num) {
-            totSum += value;
-        }
-        
-        // Checking for edge cases
-        if (totSum - d < 0 || (totSum - d) % 2 == 1) {
-            return 0;
-        }
-        
-        int s2 = (totSum - d) / 2;
-        dp = new int[n][s2 + 1];
-        for (int[] row : dp) {
-            Arrays.fill(row, -1);
-        }
-        
-        return f(n - 1, s2, num);
+    public int findTargetSumWays(int[] nums, int target) {
+        return targetSum(target, nums);
     }
 
-    private int f(int index, int target, int[] num) {
-        if (target < 0) {
-            return 0;
-        }
-        if (index == 0) {
-            if (target == 0 && num[0] == 0) {
-                return 2;
+    private int f(int ind, int target, int[] arr) {
+        if (target < 0) return 0; // Base case for invalid targets
+        if (ind == 0) {
+            if (target == 0 && arr[0] == 0) {
+                return 2; // Special case when arr[0] is 0 and target is 0
             }
-            if (target == 0 || target == num[0]) {
+            if (target == 0 || target == arr[0]) {
                 return 1;
             }
             return 0;
         }
-
+        
         // If the subproblem has already been solved, return the result from the memoization table
-        if (dp[index][target] != -1) {
-            return dp[index][target];
+        if (dp[ind][target] != -1) {
+            return dp[ind][target];
         }
 
         // If the current element is not taken
-        int notTaken = f(index - 1, target, num);
+        int notTaken = f(ind - 1, target, arr);
 
         // If the current element is taken
         int taken = 0;
-        if (num[index] <= target) {
-            taken = f(index - 1, target - num[index], num);
+        if (arr[ind] <= target) {
+            taken = f(ind - 1, target - arr[ind], arr);
         }
 
         // Save the result in dp and return
-        dp[index][target] = (notTaken + taken) % MOD;
-        return dp[index][target];
+        dp[ind][target] = (notTaken + taken) % MOD;
+        return dp[ind][target];
+    }
+
+    private int targetSum(int target, int[] arr) {
+        int n = arr.length;
+        int totSum = 0;
+        for (int num : arr) {
+            totSum += num;
+        }
+
+        if (totSum - target < 0 || (totSum - target) % 2 == 1) {
+            return 0;
+        }
+
+        int s2 = (totSum - target) / 2;
+
+        dp = new int[n][s2 + 1];
+        for (int[] row : dp) {
+            Arrays.fill(row, -1);
+        }
+
+        return f(n - 1, s2, arr);
     }
 
     public static void main(String[] args) {
         Solution solution = new Solution();
-        int[] num = {1, 2, 3, 4}; // Example input
-        int n = num.length;
-        int d = 2;
-        System.out.println(solution.countPartitions(n, d, num)); // Example usage
+        int[] nums = {1, 1, 1, 1, 1}; // Example input
+        int target = 3;
+        System.out.println(solution.findTargetSumWays(nums, target)); // Example usage
+    }
+}
+
+
+11.
+
+# DP I :
+
+public class Solution {
+
+    public int coinChange(int[] coins, int amount) {
+        int n = coins.length;
+        int[][] dp = new int[n][amount + 1];
+        final int INF = (int)1e9; // Use a large value to represent "infinity"
+
+        // Initialize the first row of the DP table
+        for (int i = 0; i <= amount; i++) {
+            if (i % coins[0] == 0) {
+                dp[0][i] = i / coins[0];
+            } else {
+                dp[0][i] = INF;
+            }
+        }
+
+        // Fill the rest of the DP table
+        for (int ind = 1; ind < n; ind++) {
+            for (int target = 0; target <= amount; target++) {
+                int notTake = dp[ind - 1][target];  // Case where we do not take the current coin
+                int take = INF;  // Initialize with "infinity"
+                if (coins[ind] <= target) {
+                    take = 1 + dp[ind][target - coins[ind]];  // Case where we take the current coin
+                }
+                dp[ind][target] = Math.min(notTake, take);
+            }
+        }
+
+        int ans = dp[n - 1][amount];
+        // If the result is still equal to "infinity", it means it's not possible to achieve the target sum.
+        if (ans >= INF) {
+            return -1;
+        }
+        return ans;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] coins = {1, 2, 5}; // Example input
+        int amount = 11;
+        System.out.println(solution.coinChange(coins, amount)); // Example usage
+    }
+}
+
+dpI
+
+public class Solution {
+
+    private static final int INF = (int)1e9;
+
+    // Helper function to compute minimum elements
+    private int minimumElementsUtil(int[] arr, int ind, int T, int[][] dp) {
+        if (ind == 0) {
+            if (T % arr[0] == 0) {
+                return T / arr[0];
+            } else {
+                return INF;
+            }
+        }
+
+        if (dp[ind][T] != -1) {
+            return dp[ind][T];
+        }
+
+        // Calculate not taken case
+        int notTaken = minimumElementsUtil(arr, ind - 1, T, dp);
+
+        // Calculate taken case
+        int taken = INF;
+        if (arr[ind] <= T) {
+            taken = 1 + minimumElementsUtil(arr, ind, T - arr[ind], dp);
+        }
+
+        dp[ind][T] = Math.min(notTaken, taken);
+        return dp[ind][T];
+    }
+
+    // Main function to compute minimum elements
+    private int minimumElements(int[] arr, int T) {
+        int n = arr.length;
+        int[][] dp = new int[n][T + 1];
+        for (int[] row : dp) {
+            java.util.Arrays.fill(row, -1);
+        }
+        int ans = minimumElementsUtil(arr, n - 1, T, dp);
+        return ans >= INF ? -1 : ans;
+    }
+
+    // Public function to be called
+    public int coinChange(int[] coins, int amount) {
+        return minimumElements(coins, amount);
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] coins = {1, 2, 5}; // Example input
+        int amount = 11;
+        System.out.println(solution.coinChange(coins, amount)); // Example usage
+    }
+}
+
+12.
+
+DP II
+
+public class Solution {
+    public int change(int amount, int[] coins) {
+        int T = amount;
+        int[] arr = coins;
+        int n = arr.length;
+
+        // Initialize the dp array
+        int[][] dp = new int[n][T + 1];
+        
+        // Base case: Initialize the first row of dp
+        for (int i = 0; i <= T; i++) {
+            if (i % arr[0] == 0) {
+                dp[0][i] = 1;
+            }
+        }
+
+        // Fill the dp array
+        for (int ind = 1; ind < n; ind++) {
+            for (int target = 0; target <= T; target++) {
+                int notTaken = dp[ind - 1][target];
+                int taken = 0;
+                if (arr[ind] <= target) {
+                    taken = dp[ind][target - arr[ind]];
+                }
+                dp[ind][target] = notTaken + taken;
+            }
+        }
+
+        // Return the result
+        return dp[n - 1][T];
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] coins = {1, 2, 5}; // Example input
+        int amount = 5;
+        System.out.println(solution.change(amount, coins)); // Example usage
+    }
+}
+
+DP I
+
+public class Solution {
+    public int change(int amount, int[] coins) {
+        int n = coins.length;
+        int T = amount;
+        
+        // Create a dp array for memoization
+        int[][] dp = new int[n][T + 1];
+        
+        // Initialize the dp array with -1 to indicate uncomputed states
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j <= T; j++) {
+                dp[i][j] = -1;
+            }
+        }
+        
+        return countWaysToMakeChangeUtil(coins, n - 1, T, dp);
+    }
+    
+    private int countWaysToMakeChangeUtil(int[] arr, int ind, int T, int[][] dp) {
+        if (ind == 0) {
+            return (T % arr[0] == 0) ? 1 : 0;
+        }
+
+        if (dp[ind][T] != -1) {
+            return dp[ind][T];
+        }
+
+        // Recursive case: not taking the coin
+        int notTaken = countWaysToMakeChangeUtil(arr, ind - 1, T, dp);
+
+        // Recursive case: taking the coin
+        int taken = 0;
+        if (arr[ind] <= T) {
+            taken = countWaysToMakeChangeUtil(arr, ind, T - arr[ind], dp);
+        }
+
+        // Save the result in dp and return
+        dp[ind][T] = notTaken + taken;
+        return dp[ind][T];
+    }
+    
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] coins = {1, 2, 5}; // Example input
+        int amount = 5;
+        System.out.println(solution.change(amount, coins)); // Example usage
+    }
+}
+
+13.
+
+DP II
+
+public class Solution {
+    public int maxProfit(int n, int[] price) {
+        int[][] dp = new int[n + 1][n + 1];
+        
+        // Initialize dp array
+        for (int i = 0; i < n; i++) {
+            dp[i][0] = 0;
+        }
+        
+        // Fill the dp table
+        for (int i = 1; i <= n; i++) {
+            for (int j = 0; j <= n; j++) {
+                int taken = 0;
+                if (j >= i) {
+                    taken = price[i - 1] + dp[i][j - i];
+                }
+                int notTaken = dp[i - 1][j];
+                
+                dp[i][j] = Math.max(taken, notTaken);
+            }
+        }
+        
+        return dp[n][n];
+    }
+    
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] price = {1, 5, 8, 9, 10, 17, 17, 20}; // Example input for rod prices
+        int n = price.length; // Length of the rod
+        System.out.println(solution.maxProfit(n, price)); // Example usage
+    }
+}
+
+DP I
+
+public class Solution {
+    public int cutRod(int[] price, int N) {
+        // Create the dp array to store results of subproblems
+        int n = price.length;
+        int[][] dp = new int[n][N + 1];
+        
+        // Helper function to compute maximum profit
+        int f(int i, int[] price, int T, int[][] dp) {
+            if (T <= 0) {
+                return 0;
+            }
+            if (i == 0) {
+                dp[0][T] = price[0] * T;
+                return dp[0][T];
+            }
+
+            if (dp[i][T] != -1) {
+                return dp[i][T];
+            }
+
+            int taken = 0;
+            if (T >= (i + 1)) {
+                taken = price[i] + f(i, price, T - (i + 1), dp);
+            }
+            int notTaken = f(i - 1, price, T, dp);
+
+            dp[i][T] = Math.max(taken, notTaken);
+            return dp[i][T];
+        }
+
+        // Initialize dp array with -1
+        for (int[] row : dp) {
+            java.util.Arrays.fill(row, -1);
+        }
+
+        // Compute the maximum profit
+        return f(n - 1, price, N, dp);
+    }
+    
+    // Main method to run some test cases
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] price = {1, 5, 8, 9, 10, 17, 17, 20}; // Example rod prices
+        int N = 8; // Length of the rod
+        System.out.println(solution.cutRod(price, N)); // Example usage
+    }
+}
+
+
+14.
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+public class Solution {
+
+    public int minimumDifference(int[] nums) {
+        int n = nums.length / 2;
+        int sum_nums = Arrays.stream(nums).sum();
+        int target = sum_nums / 2;
+
+        List<Set<Integer>> firstHalfSums = getSubsetSums(Arrays.copyOfRange(nums, 0, n));
+        List<Set<Integer>> secondHalfSums = getSubsetSums(Arrays.copyOfRange(nums, n, nums.length));
+
+        int min_diff = Integer.MAX_VALUE;
+
+        for (int i = 0; i <= n; i++) {
+            List<Integer> firstList = new ArrayList<>(firstHalfSums.get(i));
+            List<Integer> secondList = new ArrayList<>(secondHalfSums.get(n - i));
+            Collections.sort(secondList);
+
+            for (int s1 : firstList) {
+                int pos = Collections.binarySearch(secondList, target - s1);
+                if (pos < 0) {
+                    pos = -(pos + 1);
+                }
+
+                if (pos < secondList.size()) {
+                    int s2 = secondList.get(pos);
+                    int total_sum1 = s1 + s2;
+                    int total_sum2 = sum_nums - total_sum1;
+                    min_diff = Math.min(min_diff, Math.abs(total_sum1 - total_sum2));
+                }
+
+                if (pos > 0) {
+                    int s2 = secondList.get(pos - 1);
+                    int total_sum1 = s1 + s2;
+                    int total_sum2 = sum_nums - total_sum1;
+                    min_diff = Math.min(min_diff, Math.abs(total_sum1 - total_sum2));
+                }
+            }
+        }
+
+        return min_diff;
+    }
+
+    private List<Set<Integer>> getSubsetSums(int[] arr) {
+        int n = arr.length;
+        List<Set<Integer>> subsetSums = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            Set<Integer> sums = new HashSet<>();
+            generateCombinations(arr, i, 0, 0, sums);
+            subsetSums.add(sums);
+        }
+        return subsetSums;
+    }
+
+    private void generateCombinations(int[] arr, int k, int start, int sum, Set<Integer> sums) {
+        if (k == 0) {
+            sums.add(sum);
+            return;
+        }
+        for (int i = start; i < arr.length; i++) {
+            generateCombinations(arr, k - 1, i + 1, sum + arr[i], sums);
+        }
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] nums = {1, 2, 3, 4, 5, 6}; // Example input
+        System.out.println(solution.minimumDifference(nums)); // Example usage
     }
 }
