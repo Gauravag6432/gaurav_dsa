@@ -1,82 +1,90 @@
-2.
+3.
+
+import java.util.Arrays;
 
 public class Solution {
-    public int knapSack(int W, int[] wt, int[] val, int n) {
-        // Create a 2D array for dp
-        int[][] dp = new int[n + 1][W + 1];
+    public int knapSack(int n, int W, int[] val, int[] wt) {
+        // Create dp table initialized to 0
+        int[][] dp = new int[n][W + 1];
         
-        // Build the dp array
-        for (int i = 1; i <= n; i++) {
-            for (int w = 0; w <= W; w++) {
-                if (wt[i - 1] <= w) {
-                    dp[i][w] = Math.max(val[i - 1] + dp[i - 1][w - wt[i - 1]], dp[i - 1][w]);
-                } else {
-                    dp[i][w] = dp[i - 1][w];
+        // Initialize first row of dp table
+        for (int i = wt[0]; i <= W; i++) {
+            dp[0][i] = (i / wt[0]) * val[0];
+        }
+
+        // Fill the dp table for the rest of the items
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j <= W; j++) {
+                // Not taking the current item
+                int notTaken = dp[i - 1][j];
+                
+                // Taking the current item
+                int taken = Integer.MIN_VALUE;
+                if (wt[i] <= j) {
+                    taken = val[i] + dp[i][j - wt[i]];
                 }
+                
+                // Update the dp table with the maximum value
+                dp[i][j] = Math.max(notTaken, taken);
             }
         }
         
-        // Return the maximum value that can be achieved with weight W
-        return dp[n][W];
+        return dp[n - 1][W];
     }
 
     public static void main(String[] args) {
         Solution solution = new Solution();
-        int W = 50;
-        int[] wt = {10, 20, 30};
-        int[] val = {60, 100, 120};
-        int n = wt.length;
-        int result = solution.knapSack(W, wt, val, n);
-        System.out.println(result); // Output: 220
+        int n = 3;
+        int W = 8;
+        int[] val = {20, 5, 10};
+        int[] wt = {2, 3, 5};
+        int result = solution.knapSack(n, W, val, wt);
+        System.out.println(result); // Output will depend on the values of `val` and `wt`
     }
 }
 
-DP I: Memoization
+DP I 
 
 public class Solution {
-    // Recursive function with memoization
-    private int knapsackUtil(int[] wt, int[] val, int ind, int W, int[][] dp) {
+    
+    public int knapSack(int N, int W, int[] val, int[] wt) {
+        int[][] dp = new int[N][W + 1];
+        for (int[] row : dp) {
+            java.util.Arrays.fill(row, -1);
+        }
+        return f(wt, val, N - 1, W, dp);
+    }
+
+    private int f(int[] wt, int[] val, int ind, int W, int[][] dp) {
         if (ind == 0) {
-            if (wt[0] <= W) {
-                return val[0];
-            } else {
-                return 0;
-            }
+            return (W / wt[0]) * val[0];
         }
 
         if (dp[ind][W] != -1) {
             return dp[ind][W];
         }
 
-        // Not taking the current item
-        int notTaken = knapsackUtil(wt, val, ind - 1, W, dp);
-
-        // Taking the current item
+        int notTaken = f(wt, val, ind - 1, W, dp);
         int taken = Integer.MIN_VALUE;
+
         if (wt[ind] <= W) {
-            taken = val[ind] + knapsackUtil(wt, val, ind - 1, W - wt[ind], dp);
+            taken = val[ind] + f(wt, val, ind, W - wt[ind], dp);
         }
 
         dp[ind][W] = Math.max(notTaken, taken);
         return dp[ind][W];
     }
 
-    public int knapsack(int W, int[] wt, int[] val) {
-        int n = wt.length;
-        int[][] dp = new int[n][W + 1];
-        // Initialize dp array with -1
-        for (int[] row : dp) {
-            Arrays.fill(row, -1);
-        }
-        return knapsackUtil(wt, val, n - 1, W, dp);
-    }
-
     public static void main(String[] args) {
         Solution solution = new Solution();
-        int W = 50;
-        int[] wt = {10, 20, 30};
-        int[] val = {60, 100, 120};
-        int result = solution.knapsack(W, wt, val);
-        System.out.println(result); // Output: 220
+        int N = 3;
+        int W = 8;
+        int[] val = {20, 5, 10};
+        int[] wt = {2, 3, 5};
+        int result = solution.knapSack(N, W, val, wt);
+        System.out.println(result); // Output will depend on the values of `val` and `wt`
     }
 }
+
+4.
+
