@@ -1,0 +1,82 @@
+# Return the maximum number of events you can attend.
+given the start and end time of each events.
+
+# link: https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/submissions/
+
+#JAVA
+# soln 1
+
+class Solution {
+    public int maxEvents(int[][] events) {
+        // Sort events by their start day
+        Arrays.sort(events, (a, b) -> Integer.compare(a[0], b[0]));
+
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        int maxEvents = 0;
+        int day = 0;
+        int i = 0;
+        int n = events.length;
+
+        while (i < n || !minHeap.isEmpty()) {
+            // Add all events starting today or earlier to the min-heap
+            while (i < n && events[i][0] <= day) {
+                minHeap.add(events[i][1]);
+                i++;
+            }
+            // Remove all events that have already ended before today
+            while (!minHeap.isEmpty() && minHeap.peek() < day) {
+                minHeap.poll();
+            }
+            // If we have events in the heap, attend the one that ends the earliest
+            if (!minHeap.isEmpty()) {
+                minHeap.poll(); // Attend the event
+                maxEvents++;
+            }
+            // Move to the next day
+            day++;
+        }
+        return maxEvents;
+    }
+}
+
+#2 Soln (using priority queue)
+
+class Solution {
+    public int maxEvents(int[][] events) {
+        // Sort events by their start day
+        Arrays.sort(events, (a, b) -> Integer.compare(a[0], b[0]));
+
+        // Priority queue to keep track of the end days of the events
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        int count = 0;
+        int today = 1;
+        int index = 0;
+        int n = events.length;
+
+        while (index < n || !pq.isEmpty()) {
+            // If no events are in the priority queue, skip to the next event's start day
+            if (pq.isEmpty()) {
+                today = events[index][0];
+            }
+
+            // Add all events starting today to the priority queue
+            while (index < n && events[index][0] == today) {
+                pq.offer(events[index][1]);
+                index++;
+            }
+
+            // Attend the event that ends the earliest
+            if (!pq.isEmpty()) {
+                pq.poll(); // Attend the event
+                count++;
+                today++;
+            }
+
+            // Remove events from the priority queue that have already ended
+            while (!pq.isEmpty() && pq.peek() < today) {
+                pq.poll();
+            }
+        }
+        return count;
+    }
+}
