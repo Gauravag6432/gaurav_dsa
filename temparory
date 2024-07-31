@@ -1,202 +1,173 @@
-my approach I
+DP on square
+
+I
+
+import java.util.Stack;
 
 public class Solution {
-    public int lengthOfLIS(int[] arr) {
-        int n = arr.length;
-        int[][] dp = new int[n][n + 1];
-        
-        // Initialize the dp array
-        for (int i = 0; i < n; i++) {
-            dp[i][0] = 1;
-        }
-        
-        int maxi = 1;
-        
-        // Fill the dp array
-        for (int ind = 0; ind < n; ind++) {
-            for (int prev_index = 0; prev_index < ind; prev_index++) {
-                int notTake = dp[ind][prev_index];
-                int take = 0;
 
-                if (arr[ind] > arr[prev_index]) {
-                    take = 1 + dp[prev_index][prev_index];
-                }
-
-                dp[ind][prev_index + 1] = Math.max(notTake, take);
-                maxi = Math.max(maxi, dp[ind][prev_index + 1]);
-            }
-        }
-
-        return maxi;
-    }
-
-    public static void main(String[] args) {
-        Solution solution = new Solution();
-        int[] arr = {10, 9, 2, 5, 3, 7, 101, 18};
-        int result = solution.lengthOfLIS(arr);
-        System.out.println(result); // Output: 4
-    }
-}
-
-my approach II
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class Solution {
-    public int lengthOfLIS(int[] arr) {
-        int n = arr.length;
-        List<Integer> dp = new ArrayList<>();
-        int maxi = 1;
-
-        for (int ind = 0; ind < n; ind++) {
-            List<Integer> cur = new ArrayList<>();
-            cur.add(1); // Initialize current LIS length for the current index
-
-            for (int prev_index = 0; prev_index < ind; prev_index++) {
-                int notTake = cur.get(cur.size() - 1);
-                int take = 0;
-
-                if (arr[ind] > arr[prev_index]) {
-                    take = 1 + dp.get(prev_index);
-                }
-
-                cur.add(Math.max(notTake, take));
-                maxi = Math.max(maxi, cur.get(prev_index + 1));
-            }
-
-            dp.add(cur.get(cur.size() - 1));
-        }
-
-        return maxi;
-    }
-
-    public static void main(String[] args) {
-        Solution solution = new Solution();
-        int[] arr = {10, 9, 2, 5, 3, 7, 101, 18};
-        int result = solution.lengthOfLIS(arr);
-        System.out.println(result); // Output: 4
-    }
-}
-
-# DP III:
-
-public class Solution {
-    public int lengthOfLIS(int[] arr) {
-        int n = arr.length;
-        int[] next_dp = new int[n + 1];
-        int[] cur_dp = new int[n + 1];
-
-        for (int ind = n - 1; ind >= 0; ind--) {
-            for (int prev_index = ind - 1; prev_index >= -1; prev_index--) {
-                int not_take = next_dp[prev_index + 1];
-                int take = 0;
-                
-                if (prev_index == -1 || arr[ind] > arr[prev_index]) {
-                    take = 1 + next_dp[ind + 1];
-                }
-                
-                cur_dp[prev_index + 1] = Math.max(not_take, take);
-            }
-            // Copy cur_dp to next_dp
-            System.arraycopy(cur_dp, 0, next_dp, 0, cur_dp.length);
-        }
-
-        return cur_dp[0];
-    }
-
-    public static void main(String[] args) {
-        Solution solution = new Solution();
-        int[] arr = {10, 9, 2, 5, 3, 7, 101, 18};
-        int result = solution.lengthOfLIS(arr);
-        System.out.println(result); // Output: 4
-    }
-}
-
-
-# DP II:
-
-public class Solution {
-    public int lengthOfLIS(int[] arr) {
-        int n = arr.length;
-        int[][] dp = new int[n + 1][n + 1];
-
-        // Iterate from the last element to the first element
-        for (int ind = n - 1; ind >= 0; ind--) {
-            // Iterate from the previous index to -1
-            for (int prev_index = ind - 1; prev_index >= -1; prev_index--) {
-                int not_take = dp[ind + 1][prev_index + 1];
-                int take = 0;
-
-                // Check if current element can be included
-                if (prev_index == -1 || arr[ind] > arr[prev_index]) {
-                    take = 1 + dp[ind + 1][ind + 1];
-                }
-
-                // Update the DP table
-                dp[ind][prev_index + 1] = Math.max(not_take, take);
-            }
-        }
-
-        return dp[0][0];
-    }
-
-    public static void main(String[] args) {
-        Solution solution = new Solution();
-        int[] arr = {10, 9, 2, 5, 3, 7, 101, 18};
-        int result = solution.lengthOfLIS(arr);
-        System.out.println(result); // Output: 4
-    }
-}
-
-
-# DP I:
-
-public class Solution {
-    
-    private int f(int[] arr, int n, int ind, int prev_index, int[][] dp) {
-        // Base case: if the index reaches the end of the array
-        if (ind == n) {
+    public int maximalRectangle(char[][] matrix) {
+        if (matrix.length == 0 || matrix[0].length == 0) {
             return 0;
         }
 
-        // Return the stored result if already computed
-        if (dp[ind][prev_index + 1] != -1) {
-            return dp[ind][prev_index + 1];
+        int m = matrix.length;
+        int n = matrix[0].length;
+
+        // Initialize heights array
+        int[] heights = new int[n];
+        int maxArea = 0;
+
+        for (int i = 0; i < m; i++) {
+            // Update the heights array for the current row
+            for (int j = 0; j < n; j++) {
+                heights[j] = matrix[i][j] == '1' ? heights[j] + 1 : 0;
+            }
+
+            // Compute the maximum rectangle area with the updated heights
+            maxArea = Math.max(maxArea, largestRectangleArea(heights));
         }
 
-        // Option to not take the current element
-        int notTake = f(arr, n, ind + 1, prev_index, dp);
-
-        // Option to take the current element
-        int take = 0;
-        if (prev_index == -1 || arr[ind] > arr[prev_index]) {
-            take = 1 + f(arr, n, ind + 1, ind, dp);
-        }
-
-        // Store the result in dp table
-        dp[ind][prev_index + 1] = Math.max(notTake, take);
-
-        return dp[ind][prev_index + 1];
+        return maxArea;
     }
 
-    public int lengthOfLIS(int[] nums) {
-        int n = nums.length;
+    private int largestRectangleArea(int[] heights) {
+        int n = heights.length;
+        Stack<Integer> st = new Stack<>();
+        int maxArea = 0;
 
-        // Initialize the dp table with -1
-        int[][] dp = new int[n][n + 1];
-        for (int[] row : dp) {
-            java.util.Arrays.fill(row, -1);
+        for (int i = 0; i <= n; i++) {
+            while (!st.isEmpty() && (i == n || heights[i] < heights[st.peek()])) {
+                int h = heights[st.pop()];
+                int width = st.isEmpty() ? i : i - st.peek() - 1;
+                maxArea = Math.max(maxArea, h * width);
+            }
+            st.push(i);
         }
 
-        // Call the recursive function
-        return f(nums, n, 0, -1, dp);
+        return maxArea;
     }
 
     public static void main(String[] args) {
         Solution solution = new Solution();
-        int[] nums = {10, 9, 2, 5, 3, 7, 101, 18};
-        int result = solution.lengthOfLIS(nums);
-        System.out.println(result); // Output: 4
+        char[][] matrix = {
+            {'1', '0', '1', '0', '0'},
+            {'1', '0', '1', '1', '1'},
+            {'1', '1', '1', '1', '1'},
+            {'1', '0', '0', '1', '0'}
+        };
+        int result = solution.maximalRectangle(matrix);
+        System.out.println(result); // Output: 6
+    }
+}
+
+II
+
+public class Solution {
+    public int maximalRectangle(char[][] matrix) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return 0;
+        }
+
+        int n = matrix.length; // number of rows
+        int m = matrix[0].length; // number of columns
+        int[] heights = new int[m];
+        int max_i = 0;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (matrix[i][j] == '1') {
+                    heights[j]++;
+                } else {
+                    heights[j] = 0;
+                }
+            }
+
+            int area_i = largestRectangleArea(heights);
+            max_i = Math.max(max_i, area_i);
+        }
+
+        return max_i;
+    }
+
+    private int largestRectangleArea(int[] heights) {
+        int n = heights.length;
+        Stack<Integer> st = new Stack<>();
+        int max_i = 0;
+
+        for (int i = 0; i <= n; i++) {
+            while (!st.isEmpty() && (i == n || heights[i] < heights[st.peek()])) {
+                int h = heights[st.pop()];
+                int width = st.isEmpty() ? i : i - st.peek() - 1;
+                max_i = Math.max(max_i, h * width);
+            }
+            st.push(i);
+        }
+
+        return max_i;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        char[][] matrix = {
+            {'1', '0', '1', '0', '0'},
+            {'1', '0', '1', '1', '1'},
+            {'1', '1', '1', '1', '1'},
+            {'1', '0', '0', '1', '0'}
+        };
+        int result = solution.maximalRectangle(matrix);
+        System.out.println(result); // Output: 6
+    }
+}
+
+2. conunt square 
+
+import java.util.*;
+
+public class Solution {
+    public int countSquares(int[][] matrix) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int[][] dp = new int[m][n];
+
+        // Copy the first row
+        for (int i = 0; i < n; i++) {
+            dp[0][i] = matrix[0][i];
+        }
+        
+        // Copy the first column
+        for (int i = 1; i < m; i++) {
+            dp[i][0] = matrix[i][0];
+        }
+
+        // Fill the rest of dp table
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                if (matrix[i][j] == 1) {
+                    dp[i][j] = Math.min(dp[i][j-1], Math.min(dp[i-1][j-1], dp[i-1][j])) + matrix[i][j];
+                }
+            }
+        }
+
+        // Calculate the total number of squares
+        int s = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                s += dp[i][j];
+            }
+        }
+
+        return s;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[][] matrix = {
+            {1, 0, 1},
+            {1, 1, 0},
+            {1, 1, 0}
+        };
+        int result = solution.countSquares(matrix);
+        System.out.println(result); // Output: 7
     }
 }
