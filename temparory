@@ -106,11 +106,32 @@ class Solution {
     }
 }
 
-        // Return the result in the bottom-right corner
-        return dp[m - 1][n - 1];
-    }
-}
-
-
 4.
 
+class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {
+         int m = triangle.size();
+        
+        // Create a 2D dp array to store the minimum path sums
+        int[][] dp = new int[m][m];
+        
+        // Initialize the dp array with the values from the triangle
+        for (int i = 0; i < m; i++) {
+            List<Integer> row = triangle.get(i);
+            for (int j = 0; j <= i; j++) {
+                dp[i][j] = row.get(j);
+            }
+        }
+
+        // Build the dp array from bottom to top
+        for (int i = m - 2; i >= 0; i--) {
+            List<Integer> row = triangle.get(i);
+            for (int j = 0; j <= i; j++) {
+                dp[i][j] += Math.min(dp[i + 1][j], dp[i + 1][j + 1]);
+            }
+        }
+
+        // Return the minimum path sum from the top of the triangle
+        return dp[0][0];
+    }
+}
