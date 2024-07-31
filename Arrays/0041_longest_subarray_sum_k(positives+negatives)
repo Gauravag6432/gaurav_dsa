@@ -70,7 +70,7 @@ class Solution{
     }
 }
 
-#3 soln optimal
+#3 soln optimal (only for positive numbers)
 
 class Solution{
     // Function for finding maximum and value pair
@@ -100,7 +100,7 @@ class Solution{
     }
 }
 
-#4 soln optimal
+#4 soln optimal (for only positives, for positives, negatives and zero )
 
 class Solution{
     // Function for finding maximum and value pair
