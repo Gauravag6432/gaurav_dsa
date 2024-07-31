@@ -1,84 +1,119 @@
-6.
-
-import java.util.ArrayList;
-import java.util.List;
+# DP II Approach I:
 
 public class Solution {
+    private static final int MOD = 1000000007;
     
-    // Method to get all subset sums
-    public List<Integer> getAllSubsetSum(int[] nums) {
-        List<Integer> result = new ArrayList<>();
-        result.add(0);  // Initial subset sum is 0
+    public int perfectSum(int[] arr, int n, int targetSum) {
+        int[][] dp = new int[n + 1][targetSum + 1];
+    
+        for (int i = 0; i <= n; i++) {
+            dp[i][0] = 1;
+        }
 
-        getSubsetSum(nums.length - 1, nums, result);
-        
-        return result;
-    }
-    
-    // Recursive method to calculate all subset sums
-    private void getSubsetSum(int ind, int[] arr, List<Integer> a) {
-        if (ind < 0) {
-            return;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 0; j <= targetSum; j++) {
+                dp[i][j] = dp[i - 1][j] % MOD;
+                if (arr[i - 1] <= j) {
+                    dp[i][j] = (dp[i][j] + dp[i - 1][j - arr[i - 1]]) % MOD;
+                }
+            }
         }
-        
-        List<Integer> temp = new ArrayList<>();
-        for (int i : a) {
-            temp.add(i + arr[ind]);
-        }
-        a.addAll(temp);
-        
-        getSubsetSum(ind - 1, arr, a);
+
+        return dp[n][targetSum];
     }
-    
+
     public static void main(String[] args) {
         Solution solution = new Solution();
-        int[] nums = {1, 2, 3};
-        List<Integer> result = solution.getAllSubsetSum(nums);
-        System.out.println(result);  // Output all subset sums
+        int[] arr = {1, 2, 3};
+        int n = arr.length;
+        int targetSum = 4;
+        System.out.println(solution.perfectSum(arr, n, targetSum));  // Example usage
     }
 }
 
-7.
-
-import java.util.ArrayList;
-import java.util.List;
+# DP II Approach II:
 
 public class Solution {
-    
-    // Method to get all subsets
-    public List<List<Integer>> getAllSubsets(int[] nums) {
-        List<List<Integer>> result = new ArrayList<>();
-        getSubsets(nums.length - 1, nums, result);
-        return result;
-    }
-    
-    // Recursive method to generate all subsets
-    private void getSubsets(int ind, int[] arr, List<List<Integer>> a) {
-        if (ind < 0) {
-            return;
+    private static final int MOD = 1000000007;
+
+    public int perfectSum(int[] num, int n, int k) {
+        int[][] dp = new int[n + 1][k + 1];
+
+        // Base case initialization
+        for (int i = 0; i <= n; i++) {
+            dp[i][0] = 1;
         }
-        
-        List<List<Integer>> temp = new ArrayList<>();
-        
-        for (List<Integer> subset : a) {
-            List<Integer> newSubset = new ArrayList<>(subset);
-            newSubset.add(arr[ind]);
-            temp.add(newSubset);
+
+        // Fill the dp array
+        for (int ind = 1; ind <= n; ind++) {
+            for (int target = 0; target <= k; target++) {
+                int notTaken = dp[ind - 1][target];
+                int taken = 0;
+                if (num[ind - 1] <= target) {
+                    taken = dp[ind - 1][target - num[ind - 1]];
+                }
+                dp[ind][target] = (notTaken + taken) % MOD;
+            }
         }
-        
-        a.addAll(temp);
-        
-        List<Integer> singleElementSubset = new ArrayList<>();
-        singleElementSubset.add(arr[ind]);
-        a.add(singleElementSubset);
-        
-        getSubsets(ind - 1, arr, a);
+
+        return dp[n][k];
     }
-    
+
     public static void main(String[] args) {
         Solution solution = new Solution();
-        int[] nums = {1, 2, 3};
-        List<List<Integer>> result = solution.getAllSubsets(nums);
-        System.out.println(result);  // Output all subsets
+        int[] num = {1, 2, 3};
+        int n = num.length;
+        int k = 4;
+        System.out.println(solution.perfectSum(num, n, k));  // Example usage
+    }
+}
+
+
+III
+
+public class Solution {
+    private static final int MOD = 1000000007;
+
+    public int perfectSum(int[] num, int n, int k) {
+        int[][] dp = new int[n][k + 1];
+
+        // Initialize base case for sum 0
+        for (int i = 0; i < n; i++) {
+            dp[i][0] = 1;
+        }
+
+        // Handle the case when num[0] is 0
+        if (num[0] == 0) {
+            dp[0][0] = 2; // 2 cases - pick and not pick
+        } else {
+            dp[0][0] = 1; // 1 case - not pick
+        }
+
+        if (num[0] != 0 && num[0] <= k) {
+            dp[0][num[0]] = 1;
+        }
+
+        // Fill the dp table
+        for (int ind = 1; ind < n; ind++) {
+            for (int target = 0; target <= k; target++) {
+                int notTaken = dp[ind - 1][target];
+                int taken = 0;
+                if (num[ind] <= target) {
+                    taken = dp[ind - 1][target - num[ind]];
+                }
+
+                dp[ind][target] = (notTaken + taken) % MOD;
+            }
+        }
+
+        return dp[n - 1][k] % MOD;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] num = {1, 2, 3};
+        int n = num.length;
+        int k = 4;
+        System.out.println(solution.perfectSum(num, n, k));  // Example usage
     }
 }
