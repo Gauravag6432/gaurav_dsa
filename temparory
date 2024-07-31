@@ -1,69 +1,202 @@
-4.
+my approach I
 
-class Solution {
-    public int minimumTotal(List<List<Integer>> triangle) {
-         int m = triangle.size();
+public class Solution {
+    public int lengthOfLIS(int[] arr) {
+        int n = arr.length;
+        int[][] dp = new int[n][n + 1];
         
-        // Create a 2D dp array to store the minimum path sums
-        int[][] dp = new int[m][m];
+        // Initialize the dp array
+        for (int i = 0; i < n; i++) {
+            dp[i][0] = 1;
+        }
         
-        // Initialize the dp array with the values from the triangle
-        for (int i = 0; i < m; i++) {
-            List<Integer> row = triangle.get(i);
-            for (int j = 0; j <= i; j++) {
-                dp[i][j] = row.get(j);
+        int maxi = 1;
+        
+        // Fill the dp array
+        for (int ind = 0; ind < n; ind++) {
+            for (int prev_index = 0; prev_index < ind; prev_index++) {
+                int notTake = dp[ind][prev_index];
+                int take = 0;
+
+                if (arr[ind] > arr[prev_index]) {
+                    take = 1 + dp[prev_index][prev_index];
+                }
+
+                dp[ind][prev_index + 1] = Math.max(notTake, take);
+                maxi = Math.max(maxi, dp[ind][prev_index + 1]);
             }
         }
 
-        // Build the dp array from bottom to top
-        for (int i = m - 2; i >= 0; i--) {
-            List<Integer> row = triangle.get(i);
-            for (int j = 0; j <= i; j++) {
-                dp[i][j] += Math.min(dp[i + 1][j], dp[i + 1][j + 1]);
+        return maxi;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] arr = {10, 9, 2, 5, 3, 7, 101, 18};
+        int result = solution.lengthOfLIS(arr);
+        System.out.println(result); // Output: 4
+    }
+}
+
+my approach II
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Solution {
+    public int lengthOfLIS(int[] arr) {
+        int n = arr.length;
+        List<Integer> dp = new ArrayList<>();
+        int maxi = 1;
+
+        for (int ind = 0; ind < n; ind++) {
+            List<Integer> cur = new ArrayList<>();
+            cur.add(1); // Initialize current LIS length for the current index
+
+            for (int prev_index = 0; prev_index < ind; prev_index++) {
+                int notTake = cur.get(cur.size() - 1);
+                int take = 0;
+
+                if (arr[ind] > arr[prev_index]) {
+                    take = 1 + dp.get(prev_index);
+                }
+
+                cur.add(Math.max(notTake, take));
+                maxi = Math.max(maxi, cur.get(prev_index + 1));
             }
+
+            dp.add(cur.get(cur.size() - 1));
         }
 
-        // Return the minimum path sum from the top of the triangle
-        return dp[0][0];
+        return maxi;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] arr = {10, 9, 2, 5, 3, 7, 101, 18};
+        int result = solution.lengthOfLIS(arr);
+        System.out.println(result); // Output: 4
+    }
+}
+
+# DP III:
+
+public class Solution {
+    public int lengthOfLIS(int[] arr) {
+        int n = arr.length;
+        int[] next_dp = new int[n + 1];
+        int[] cur_dp = new int[n + 1];
+
+        for (int ind = n - 1; ind >= 0; ind--) {
+            for (int prev_index = ind - 1; prev_index >= -1; prev_index--) {
+                int not_take = next_dp[prev_index + 1];
+                int take = 0;
+                
+                if (prev_index == -1 || arr[ind] > arr[prev_index]) {
+                    take = 1 + next_dp[ind + 1];
+                }
+                
+                cur_dp[prev_index + 1] = Math.max(not_take, take);
+            }
+            // Copy cur_dp to next_dp
+            System.arraycopy(cur_dp, 0, next_dp, 0, cur_dp.length);
+        }
+
+        return cur_dp[0];
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] arr = {10, 9, 2, 5, 3, 7, 101, 18};
+        int result = solution.lengthOfLIS(arr);
+        System.out.println(result); // Output: 4
     }
 }
 
 
-5.
+# DP II:
 
-int n = matrix.length;
-        int[][] dp = new int[n][n];
+public class Solution {
+    public int lengthOfLIS(int[] arr) {
+        int n = arr.length;
+        int[][] dp = new int[n + 1][n + 1];
 
-        // Initialize the dp array with the first row of the matrix
-        for (int i = 0; i < n; i++) {
-            dp[0][i] = matrix[0][i];
-        }
+        // Iterate from the last element to the first element
+        for (int ind = n - 1; ind >= 0; ind--) {
+            // Iterate from the previous index to -1
+            for (int prev_index = ind - 1; prev_index >= -1; prev_index--) {
+                int not_take = dp[ind + 1][prev_index + 1];
+                int take = 0;
 
-        // Fill the dp array from the second row to the last row
-        for (int i = 1; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                int left = Integer.MAX_VALUE;
-                int right = Integer.MAX_VALUE;
-
-                // Check the cell to the left
-                if (j - 1 >= 0) {
-                    left = dp[i - 1][j - 1];
+                // Check if current element can be included
+                if (prev_index == -1 || arr[ind] > arr[prev_index]) {
+                    take = 1 + dp[ind + 1][ind + 1];
                 }
 
-                // Check the cell to the right
-                if (j + 1 < n) {
-                    right = dp[i - 1][j + 1];
-                }
-
-                // Update the dp value for the current cell
-                dp[i][j] = Math.min(left, Math.min(dp[i - 1][j], right)) + matrix[i][j];
+                // Update the DP table
+                dp[ind][prev_index + 1] = Math.max(not_take, take);
             }
         }
 
-        // Find the minimum value in the last row of the dp array
-        int minPathSum = Integer.MAX_VALUE;
-        for (int i = 0; i < n; i++) {
-            minPathSum = Math.min(minPathSum, dp[n - 1][i]);
+        return dp[0][0];
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] arr = {10, 9, 2, 5, 3, 7, 101, 18};
+        int result = solution.lengthOfLIS(arr);
+        System.out.println(result); // Output: 4
+    }
+}
+
+
+# DP I:
+
+public class Solution {
+    
+    private int f(int[] arr, int n, int ind, int prev_index, int[][] dp) {
+        // Base case: if the index reaches the end of the array
+        if (ind == n) {
+            return 0;
         }
 
-        return minPathSum;
+        // Return the stored result if already computed
+        if (dp[ind][prev_index + 1] != -1) {
+            return dp[ind][prev_index + 1];
+        }
+
+        // Option to not take the current element
+        int notTake = f(arr, n, ind + 1, prev_index, dp);
+
+        // Option to take the current element
+        int take = 0;
+        if (prev_index == -1 || arr[ind] > arr[prev_index]) {
+            take = 1 + f(arr, n, ind + 1, ind, dp);
+        }
+
+        // Store the result in dp table
+        dp[ind][prev_index + 1] = Math.max(notTake, take);
+
+        return dp[ind][prev_index + 1];
+    }
+
+    public int lengthOfLIS(int[] nums) {
+        int n = nums.length;
+
+        // Initialize the dp table with -1
+        int[][] dp = new int[n][n + 1];
+        for (int[] row : dp) {
+            java.util.Arrays.fill(row, -1);
+        }
+
+        // Call the recursive function
+        return f(nums, n, 0, -1, dp);
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] nums = {10, 9, 2, 5, 3, 7, 101, 18};
+        int result = solution.lengthOfLIS(nums);
+        System.out.println(result); // Output: 4
+    }
+}
