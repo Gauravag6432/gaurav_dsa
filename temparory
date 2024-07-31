@@ -1,118 +1,84 @@
+6.
 
-DP I:
+import java.util.ArrayList;
+import java.util.List;
 
 public class Solution {
     
-    private boolean subsetSumUtil(int ind, int target, int[] arr, int[][] dp) {
-        if (target == 0) {
-            return true;
-        }
+    // Method to get all subset sums
+    public List<Integer> getAllSubsetSum(int[] nums) {
+        List<Integer> result = new ArrayList<>();
+        result.add(0);  // Initial subset sum is 0
+
+        getSubsetSum(nums.length - 1, nums, result);
         
-        if (ind == 0) {
-            return arr[0] == target;
-        }
-        
-        if (dp[ind][target] != -1) {
-            return dp[ind][target] == 1;
-        }
-        
-        boolean notTaken = subsetSumUtil(ind - 1, target, arr, dp);
-        boolean taken = false;
-        if (arr[ind] <= target) {
-            taken = subsetSumUtil(ind - 1, target - arr[ind], arr, dp);
-        }
-        
-        dp[ind][target] = (notTaken || taken) ? 1 : 0;
-        return dp[ind][target] == 1;
+        return result;
     }
     
-    public int minSubsetSumDifference(int[] arr) {
-        int n = arr.length;
-        int totSum = 0;
-        for (int num : arr) {
-            totSum += num;
+    // Recursive method to calculate all subset sums
+    private void getSubsetSum(int ind, int[] arr, List<Integer> a) {
+        if (ind < 0) {
+            return;
         }
         
-        int[][] dp = new int[n][totSum + 1];
-        for (int[] row : dp) {
-            java.util.Arrays.fill(row, -1);
+        List<Integer> temp = new ArrayList<>();
+        for (int i : a) {
+            temp.add(i + arr[ind]);
         }
+        a.addAll(temp);
         
-        for (int i = 0; i <= totSum; i++) {
-            subsetSumUtil(n - 1, i, arr, dp);
-        }
-        
-        int mini = Integer.MAX_VALUE;
-        
-        for (int i = 0; i <= totSum; i++) {
-            if (dp[n - 1][i] == 1) {
-                int diff = Math.abs(i - (totSum - i));
-                mini = Math.min(mini, diff);
-            }
-        }
-        
-        return mini;
+        getSubsetSum(ind - 1, arr, a);
     }
-
+    
     public static void main(String[] args) {
         Solution solution = new Solution();
-        int[] arr = {1, 6, 11, 5};
-        int result = solution.minSubsetSumDifference(arr);
-        System.out.println(result); // Output will be the minimum subset sum difference
+        int[] nums = {1, 2, 3};
+        List<Integer> result = solution.getAllSubsetSum(nums);
+        System.out.println(result);  // Output all subset sums
     }
 }
 
+7.
 
-dp II
+import java.util.ArrayList;
+import java.util.List;
 
 public class Solution {
     
-    public int minSubsetSumDifference(int[] arr) {
-        int n = arr.length;
-        int totSum = 0;
-        for (int num : arr) {
-            totSum += num;
-        }
-
-        boolean[][] dp = new boolean[n][totSum + 1];
-        
-        // Base cases
-        for (int i = 0; i < n; i++) {
-            dp[i][0] = true;
-        }
-
-        if (arr[0] <= totSum) {
-            dp[0][arr[0]] = true;
-        }
-
-        // Fill the DP table
-        for (int ind = 1; ind < n; ind++) {
-            for (int target = 1; target <= totSum; target++) {
-                boolean notTaken = dp[ind - 1][target];
-                boolean taken = false;
-                if (arr[ind] <= target) {
-                    taken = dp[ind - 1][target - arr[ind]];
-                }
-                dp[ind][target] = notTaken || taken;
-            }
-        }
-
-        int mini = Integer.MAX_VALUE;
-        
-        for (int i = 0; i <= totSum; i++) {
-            if (dp[n - 1][i]) {
-                int diff = Math.abs(i - (totSum - i));
-                mini = Math.min(mini, diff);
-            }
-        }
-
-        return mini;
+    // Method to get all subsets
+    public List<List<Integer>> getAllSubsets(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        getSubsets(nums.length - 1, nums, result);
+        return result;
     }
-
+    
+    // Recursive method to generate all subsets
+    private void getSubsets(int ind, int[] arr, List<List<Integer>> a) {
+        if (ind < 0) {
+            return;
+        }
+        
+        List<List<Integer>> temp = new ArrayList<>();
+        
+        for (List<Integer> subset : a) {
+            List<Integer> newSubset = new ArrayList<>(subset);
+            newSubset.add(arr[ind]);
+            temp.add(newSubset);
+        }
+        
+        a.addAll(temp);
+        
+        List<Integer> singleElementSubset = new ArrayList<>();
+        singleElementSubset.add(arr[ind]);
+        a.add(singleElementSubset);
+        
+        getSubsets(ind - 1, arr, a);
+    }
+    
     public static void main(String[] args) {
         Solution solution = new Solution();
-        int[] arr = {1, 6, 11, 5};
-        int result = solution.minSubsetSumDifference(arr);
-        System.out.println(result); // Output will be the minimum subset sum difference
+        int[] nums = {1, 2, 3};
+        List<List<Integer>> result = solution.getAllSubsets(nums);
+        System.out.println(result);  // Output all subsets
     }
 }
