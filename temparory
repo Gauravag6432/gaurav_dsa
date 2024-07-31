@@ -1,173 +1,82 @@
-DP on square
-
-I
-
-import java.util.Stack;
+2.
 
 public class Solution {
-
-    public int maximalRectangle(char[][] matrix) {
-        if (matrix.length == 0 || matrix[0].length == 0) {
-            return 0;
-        }
-
-        int m = matrix.length;
-        int n = matrix[0].length;
-
-        // Initialize heights array
-        int[] heights = new int[n];
-        int maxArea = 0;
-
-        for (int i = 0; i < m; i++) {
-            // Update the heights array for the current row
-            for (int j = 0; j < n; j++) {
-                heights[j] = matrix[i][j] == '1' ? heights[j] + 1 : 0;
-            }
-
-            // Compute the maximum rectangle area with the updated heights
-            maxArea = Math.max(maxArea, largestRectangleArea(heights));
-        }
-
-        return maxArea;
-    }
-
-    private int largestRectangleArea(int[] heights) {
-        int n = heights.length;
-        Stack<Integer> st = new Stack<>();
-        int maxArea = 0;
-
-        for (int i = 0; i <= n; i++) {
-            while (!st.isEmpty() && (i == n || heights[i] < heights[st.peek()])) {
-                int h = heights[st.pop()];
-                int width = st.isEmpty() ? i : i - st.peek() - 1;
-                maxArea = Math.max(maxArea, h * width);
-            }
-            st.push(i);
-        }
-
-        return maxArea;
-    }
-
-    public static void main(String[] args) {
-        Solution solution = new Solution();
-        char[][] matrix = {
-            {'1', '0', '1', '0', '0'},
-            {'1', '0', '1', '1', '1'},
-            {'1', '1', '1', '1', '1'},
-            {'1', '0', '0', '1', '0'}
-        };
-        int result = solution.maximalRectangle(matrix);
-        System.out.println(result); // Output: 6
-    }
-}
-
-II
-
-public class Solution {
-    public int maximalRectangle(char[][] matrix) {
-        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
-            return 0;
-        }
-
-        int n = matrix.length; // number of rows
-        int m = matrix[0].length; // number of columns
-        int[] heights = new int[m];
-        int max_i = 0;
-
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (matrix[i][j] == '1') {
-                    heights[j]++;
+    public int knapSack(int W, int[] wt, int[] val, int n) {
+        // Create a 2D array for dp
+        int[][] dp = new int[n + 1][W + 1];
+        
+        // Build the dp array
+        for (int i = 1; i <= n; i++) {
+            for (int w = 0; w <= W; w++) {
+                if (wt[i - 1] <= w) {
+                    dp[i][w] = Math.max(val[i - 1] + dp[i - 1][w - wt[i - 1]], dp[i - 1][w]);
                 } else {
-                    heights[j] = 0;
+                    dp[i][w] = dp[i - 1][w];
                 }
             }
-
-            int area_i = largestRectangleArea(heights);
-            max_i = Math.max(max_i, area_i);
-        }
-
-        return max_i;
-    }
-
-    private int largestRectangleArea(int[] heights) {
-        int n = heights.length;
-        Stack<Integer> st = new Stack<>();
-        int max_i = 0;
-
-        for (int i = 0; i <= n; i++) {
-            while (!st.isEmpty() && (i == n || heights[i] < heights[st.peek()])) {
-                int h = heights[st.pop()];
-                int width = st.isEmpty() ? i : i - st.peek() - 1;
-                max_i = Math.max(max_i, h * width);
-            }
-            st.push(i);
-        }
-
-        return max_i;
-    }
-
-    public static void main(String[] args) {
-        Solution solution = new Solution();
-        char[][] matrix = {
-            {'1', '0', '1', '0', '0'},
-            {'1', '0', '1', '1', '1'},
-            {'1', '1', '1', '1', '1'},
-            {'1', '0', '0', '1', '0'}
-        };
-        int result = solution.maximalRectangle(matrix);
-        System.out.println(result); // Output: 6
-    }
-}
-
-2. conunt square 
-
-import java.util.*;
-
-public class Solution {
-    public int countSquares(int[][] matrix) {
-        int m = matrix.length;
-        int n = matrix[0].length;
-        int[][] dp = new int[m][n];
-
-        // Copy the first row
-        for (int i = 0; i < n; i++) {
-            dp[0][i] = matrix[0][i];
         }
         
-        // Copy the first column
-        for (int i = 1; i < m; i++) {
-            dp[i][0] = matrix[i][0];
-        }
-
-        // Fill the rest of dp table
-        for (int i = 1; i < m; i++) {
-            for (int j = 1; j < n; j++) {
-                if (matrix[i][j] == 1) {
-                    dp[i][j] = Math.min(dp[i][j-1], Math.min(dp[i-1][j-1], dp[i-1][j])) + matrix[i][j];
-                }
-            }
-        }
-
-        // Calculate the total number of squares
-        int s = 0;
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                s += dp[i][j];
-            }
-        }
-
-        return s;
+        // Return the maximum value that can be achieved with weight W
+        return dp[n][W];
     }
 
     public static void main(String[] args) {
         Solution solution = new Solution();
-        int[][] matrix = {
-            {1, 0, 1},
-            {1, 1, 0},
-            {1, 1, 0}
-        };
-        int result = solution.countSquares(matrix);
-        System.out.println(result); // Output: 7
+        int W = 50;
+        int[] wt = {10, 20, 30};
+        int[] val = {60, 100, 120};
+        int n = wt.length;
+        int result = solution.knapSack(W, wt, val, n);
+        System.out.println(result); // Output: 220
+    }
+}
+
+DP I: Memoization
+
+public class Solution {
+    // Recursive function with memoization
+    private int knapsackUtil(int[] wt, int[] val, int ind, int W, int[][] dp) {
+        if (ind == 0) {
+            if (wt[0] <= W) {
+                return val[0];
+            } else {
+                return 0;
+            }
+        }
+
+        if (dp[ind][W] != -1) {
+            return dp[ind][W];
+        }
+
+        // Not taking the current item
+        int notTaken = knapsackUtil(wt, val, ind - 1, W, dp);
+
+        // Taking the current item
+        int taken = Integer.MIN_VALUE;
+        if (wt[ind] <= W) {
+            taken = val[ind] + knapsackUtil(wt, val, ind - 1, W - wt[ind], dp);
+        }
+
+        dp[ind][W] = Math.max(notTaken, taken);
+        return dp[ind][W];
+    }
+
+    public int knapsack(int W, int[] wt, int[] val) {
+        int n = wt.length;
+        int[][] dp = new int[n][W + 1];
+        // Initialize dp array with -1
+        for (int[] row : dp) {
+            Arrays.fill(row, -1);
+        }
+        return knapsackUtil(wt, val, n - 1, W, dp);
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int W = 50;
+        int[] wt = {10, 20, 30};
+        int[] val = {60, 100, 120};
+        int result = solution.knapsack(W, wt, val);
+        System.out.println(result); // Output: 220
     }
 }
