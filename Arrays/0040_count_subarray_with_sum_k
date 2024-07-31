@@ -64,7 +64,7 @@ class Solution {
     }
 }
 
-#3 best soln
+#3 soln (optimal)
 
 class Solution {
         public int subarraySum(int[] arr, int k) {
