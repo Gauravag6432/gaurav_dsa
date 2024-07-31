@@ -1,0 +1,71 @@
+https://leetcode.com/problems/largest-rectangle-in-histogram/description/
+
+Given an array of integers heights representing the histogram's bar height
+where the width of each bar is 1, return the area of the largest rectangle in the histogram.
+
+Input: heights = [2,1,5,6,2,3]
+Output: 10
+Explanation: The above is a histogram where width of each bar is 1.
+The largest rectangle is shown in the red area, which has an area = 10 units.
+
+*JAVA
+#1 soln
+
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+        Stack<Integer> stack = new Stack<>();
+        int maxArea = 0;
+        int index = 0;
+
+        while (index < heights.length) {
+            // Push the current bar to the stack if it's higher than the bar at the top of the stack
+            if (stack.isEmpty() || heights[index] >= heights[stack.peek()]) {
+                stack.push(index++);
+            } else {
+                // Calculate the area with the bar at the top of the stack as the smallest (or minimum height) bar
+                int topOfStack = stack.pop();
+                int area = heights[topOfStack] * (stack.isEmpty() ? index : index - stack.peek() - 1);
+                maxArea = Math.max(maxArea, area);
+            }
+        }
+
+        // Now, pop the remaining bars from the stack and calculate area
+        while (!stack.isEmpty()) {
+            int topOfStack = stack.pop();
+            int area = heights[topOfStack] * (stack.isEmpty() ? index : index - stack.peek() - 1);
+            maxArea = Math.max(maxArea, area);
+        }
+
+        return maxArea;
+    }
+}
+
+#2 soln
+
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+        int n = heights.length;
+        Stack<Integer> st = new Stack<>();
+        int maxArea = 0;
+
+        // Iterate through each bar in the histogram
+        for (int i = 0; i <= n; i++) {
+            // Check if the current bar is shorter than the bar at the index stored at the top of the stack
+            while (!st.isEmpty() && (i == n || heights[i] < heights[st.peek()])) {
+                // Get the height of the bar at the top of the stack
+                int h = heights[st.pop()];
+
+                // Calculate the width
+                int width = st.isEmpty() ? i : i - st.peek() - 1;
+
+                // Calculate the area with the popped height and update the maximum area
+                int area = h * width;
+                maxArea = Math.max(maxArea, area);
+            }
+
+            // Push the current index onto the stack
+            st.push(i);
+        }
+        return maxArea;
+    }
+}
