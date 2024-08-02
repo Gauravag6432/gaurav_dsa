@@ -1,0 +1,36 @@
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
+
+class Answer {
+
+    // Change these boolean values to control whether you see 
+    // the expected result and/or hints.
+    static boolean showExpectedResult = false;
+    static boolean showHints = false;
+
+    // Return a new list in reversed order
+    static List<Integer> getReversed(List<Integer> source) {
+        int n= source.size();
+        ArrayList<Integer> ans = new ArrayList<>();
+        for(int i=0;i<n;i++){
+            ans.add(source.get(i));
+        }
+        return ans;
+    }
+}
+
+#2 soln (optimal using collections)
+class Answer {
+    // Change these boolean values to control whether you see 
+    // the expected result and/or hints.
+    static boolean showExpectedResult = false;
+    static boolean showHints = false;
+
+    // Return a new list in reversed order
+    static List<Integer> getReversed(List<Integer> source) {
+        ArrayList<Integer> ans = new ArrayList<>(source);
+        Collections.reverse(ans);
+        return ans;
+    }
+}
