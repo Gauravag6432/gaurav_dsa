@@ -28,3 +28,11 @@ class Solution {
         return head;
     }
 }
+----------------------------------
+
+#variation 2: Inserting at the head--
+
+ public static Node insertHead(Node head, int val) {
+        Node temp = new Node(val, head);
+        return temp;
+    }
