@@ -1,0 +1,34 @@
+https://www.geeksforgeeks.org/problems/search-in-linked-list-1664434326/1
+
+Given the head of a linked list and an integer value, 
+find out whether the integer is present in the linked list or not.
+Return true if it is present, or else return false.
+
+example:
+Input: n = 4
+1->2->3->4  Key = 3
+Output: True
+Explanation: 3 is present in Linked List, so the function returns true.
+
+# java soln
+
+// User function Template for Java
+/* Node of a linked list
+  class Node {
+   int data;
+    Node next;
+    Node(int d)  { data = d;  next = null; }
+}
+*/
+
+class Solution {
+    static boolean searchKey(int n, Node head, int key) {
+        while(head!=null){
+            if(head.data==key){
+                return true;
+            }
+            head=head.next;
+        }
+        return false;
+    }
+}
