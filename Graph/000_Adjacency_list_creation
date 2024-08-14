@@ -1,0 +1,32 @@
+# Edge creation
+static class Edge{
+  int src;
+  int dest;
+  int wt;
+
+  public Edge(int s, int d;int w){
+    this.src=s;
+    this.dest=d;
+    this.wt=w;
+}}
+-------------------
+# Graph creation
+public static void createGraph(ArrayList<Edge> graph[]){
+  for (int i=0;i<graph.length;i++){
+    graph[i] = new ArrayList<Egde>(); 
+  }
+graph[0].add(new Edge(s:0,d:1,w:2);
+graph[1].add(new Edge(s:1,d:0,2:2);
+}
+
+public static void main(String args[]){
+  int V = 2; //vertices
+
+  ArrayList<Edge> graph[] = new ArrayList<>[V];  //graph is an array which stores ArrayList of Edge at every index(size=V).
+  createGraph(graph);
+
+  //print neighbours of 1
+  for (int i=0;i<graph[1].size();i++){
+    Edge e= graph[1].get(i);
+    System.out.println(e.dest+" , "+e.wt);  //Printing the neighbours and weight of 1
+}}}
