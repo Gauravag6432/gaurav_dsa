@@ -11,27 +11,23 @@ Output: 0 2 4 3 1
 
 class Solution {
     // Function to return a list containing the DFS traversal of the graph.
-    public static void dfs(int node, boolean vis[], ArrayList<ArrayList<Integer>> adj, 
-    ArrayList<Integer> ls) {
-        
-        //marking current node as visited
-        vis[node] = true;
-        ls.add(node);
-        
-        //getting neighbour nodes
-        for(Integer it: adj.get(node)) {
-            if(vis[it] == false) {
-                dfs(it, vis, adj, ls);
-            }
-        }
-    }
-    // Function to return a list containing the DFS traversal of the graph.
+    public void dfs(int node, ArrayList<ArrayList<Integer>> adj,
+       boolean vis[],ArrayList<Integer> ans ){
+           
+            vis[node]=true; //marking current node as visited
+            ans.add(node); //adding current node to the list
+
+            //getting neighbour nodes
+            for(int i:adj.get(node)){
+                if(!vis[i]){
+                    dfs(i,adj,vis,ans);
+                }}}
+
     public ArrayList<Integer> dfsOfGraph(int V, ArrayList<ArrayList<Integer>> adj) {
-        //boolean array to keep track of visited vertices
-        boolean vis[] = new boolean[V+1];
-        vis[0] = true; 
-        ArrayList<Integer> ls = new ArrayList<>();
-        dfs(0, vis, adj, ls); 
-        return ls; 
-    }
-}
+        
+        boolean vis[] = new boolean[V];
+        int start=0;
+        ArrayList<Integer> ans= new ArrayList<Integer>(); //list to save dfs traversal
+        dfs(start,adj,vis,ans);
+        return ans;
+    }}
