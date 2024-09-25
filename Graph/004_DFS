@@ -25,7 +25,7 @@ class Solution {
 
     public ArrayList<Integer> dfsOfGraph(int V, ArrayList<ArrayList<Integer>> adj) {
         
-        boolean vis[] = new boolean[V];
+        boolean vis[] = new boolean[V+1];
         int start=0;
         ArrayList<Integer> ans= new ArrayList<Integer>(); //list to save dfs traversal
         dfs(start,adj,vis,ans);
