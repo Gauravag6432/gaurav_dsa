@@ -5,8 +5,8 @@ ArrayList<Integer> ans = new ArrayList<>(set);
 
 # Scanner class syntaxes
 
-Scanner input = new Scanner(System.in);
-    // takes input from the keyboard
+Scanner input = new Scanner(System.in); // takes input from the keyboard
+
     int a = input.nextInt();  //returns the next integer
     float b = input.nextFloat(); //returns the next float
     String c = input.next(); // returns the next input 
