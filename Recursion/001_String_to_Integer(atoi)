@@ -48,7 +48,7 @@ class Solution {
             result = result * 10 + digit;
             i++;
         }
-        
+
         // Step 5: Apply the sign
         return result * sign;
     }
