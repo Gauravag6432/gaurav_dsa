@@ -1,9 +1,12 @@
-ArrayList<Integer> arrayList = new ArrayList<>(Arrays.asList(-1));
-ArrayList<Integer> arrayList = new ArrayList<>(Arrays.asList(new Integer[]{1, 2, 3}));
-ArrayList<Integer> ans = new ArrayList<>(set);
+Articles- 
+https://www.geeksforgeeks.org/smallest-difference-pair-values-two-unsorted-arrays/
 
+https://www.geeksforgeeks.org/find-m-th-smallest-value-in-k-sorted-arrays/
 
-# Scanner class syntaxes
+https://www.geeksforgeeks.org/minimum-number-swaps-required-sort-array/
+________________________________________________________________________
+
+# Scanner class syntaxes 
 
 Scanner input = new Scanner(System.in); // takes input from the keyboard
 
@@ -12,3 +15,4 @@ Scanner input = new Scanner(System.in); // takes input from the keyboard
     String c = input.next(); // returns the next input 
     String d = input.nextLine();  // returns next line in string
     boolean e = input.hasNextInt(); //checks if next input is a integer & returns true/false
+________________________________________________________________________
