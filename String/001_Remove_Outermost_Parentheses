@@ -5,6 +5,29 @@ Output: "()()()"
 Explanation:  The input string is "(()())(())", with primitive decomposition "(()())" + "(())".
 After removing outer parentheses of each part, this is "()()" + "()" = "()()()".
 
+#Java Soln 1--
+
+class Solution {
+    public String removeOuterParentheses(String s) {
+       StringBuilder result = new StringBuilder();
+        int balance = 0; // Tracks the balance of parentheses
+
+        for (char c : s.toCharArray()) {
+            if (c == '(') {
+                if (balance > 0) {
+                    result.append(c); // Append only if it's not an outer parenthesis
+                }
+                balance++; // Increment balance for '('
+            } else if (c == ')') {
+                balance--; // Decrement balance for ')'
+                if (balance > 0) {
+                    result.append(c); // Append only if it's not an outer parenthesis
+                }}}
+        return result.toString();
+    }}
+
+
+#Python soln
 class Solution:
     def removeOuterParentheses(self, s: str) -> str:
         i=0
@@ -25,5 +48,3 @@ class Solution:
                 ans+= s[i+1:j]
 
         return ""
-
-        
