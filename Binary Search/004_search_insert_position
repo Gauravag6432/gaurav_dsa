@@ -31,24 +31,18 @@ class Solution {
 
 #soln 2--
 class Solution {
-    public int searchInsert(int[] nums, int target) {
-        int n=nums.length;
-        int low=0,high=n-1,ans=n;
-        int mid;
+    public int searchInsert(int[] arr, int x) {
+        int n= arr.length;
+        int low=0, high=n-1, ans=n;
         while(low<=high){
-            mid=(low+high)/2;
-            if(nums[mid]==target){
-                return mid;
+            int mid=(low+high)/2;
+            if(arr[mid]<x){
+                low=mid+1;
             }
-            else if(nums[mid]>target)
-            {
+            else{
                 ans=mid;
                 high=mid-1;
             }
-            else{
-                low=mid+1;
-            }
         }
-        return ans;
-    }
-}
+        return ans;  
+    }}
