@@ -1,36 +1,19 @@
- Given an array, print all the elements which are leaders. 
- A Leader is an element that is greater than all of the elements on its right side in the array.
-Link:  https://www.geeksforgeeks.org/problems/leaders-in-an-array-1587115620/1
+https://www.geeksforgeeks.org/problems/leaders-in-an-array-1587115620/1
+
+Given an array, print all the elements which are leaders. 
+A Leader is an element that is greater than all of the elements on its right side in the array.
 
 Example 1:
 Input: arr = [4, 7, 1, 0]
 Output: 7 1 0
 Explanation: Rightmost element is always a leader. 7 and 1 are greater than the elements in their right side.
 
-#soln 1 (brute)
-1. Python--
-def leaders(self,n, arr):
-        ans = []
-        for i in range(n):
-            leader = True
-            for j in range(i+1, n):
-                if arr[j] > arr[i]:
-                    ans.append
-                    # If any element found is greater than current leader,
-                    # curr element is not the leader.
-                    leader = False
-                    break
-            # Push all the leaders in ans array.
-            if leader:
-                ans.append(arr[i])
-        return ans
+#Java soln 1--
 
-2. Java--
 ArrayList<Integer> ans= new ArrayList<>();
   
   for (int i = 0; i < n; i++) {
     boolean leader = true;
-
     //Checking whether arr[i] is greater than all 
     //the elements in its right side
     for (int j = i + 1; j < n; j++)
@@ -75,3 +58,20 @@ class Solution {
     }
 }
 
+
+# Python soln --
+def leaders(self,n, arr):
+        ans = []
+        for i in range(n):
+            leader = True
+            for j in range(i+1, n):
+                if arr[j] > arr[i]:
+                    ans.append
+                    # If any element found is greater than current leader,
+                    # curr element is not the leader.
+                    leader = False
+                    break
+            # Push all the leaders in ans array.
+            if leader:
+                ans.append(arr[i])
+        return ans
