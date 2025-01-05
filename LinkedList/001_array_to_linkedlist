@@ -9,7 +9,7 @@ Output: LinkedList: 1->2->3->4->5
 
 # JAVA Soln
 
-/* class Node { 
+/* class Node {
     int data; 
     Node next; 
 
