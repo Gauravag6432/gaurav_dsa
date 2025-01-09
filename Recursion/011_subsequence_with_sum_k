@@ -1,14 +1,13 @@
-You are given an array 'A' of 'N' integers. You have to return true 
+https://www.naukri.com/code360/problems/subset-sum_630213
+
 if there exists a subset of elements of 'A' that sums up to 'K'. Otherwise, return false.
-
-Link: https://www.naukri.com/code360/problems/subset-sum_630213?utm_source=striver&utm_medium=website&utm_campaign=a_zcoursetuf&leftPanelTabValue=PROBLEM
-
-Example
+You are given an array 'A' of 'N' integers. You have to return true 
+Example:
 'N' = 3, 'K' = 5, 'A' = [1, 2, 3].
 Subset [2, 3] has sum equal to 'K'.
 So our answer is True.
 
-#soln
+# JAVA Soln
 
 public class Solution {
     public static boolean isSubsetPresent(int n, int K,int []A) {
@@ -24,7 +23,6 @@ public class Solution {
                 dp[j] = dp[j] || dp[j - num];
             }
         }
-        
         // Return whether the subset sum K is possible
         return dp[K];
     }
