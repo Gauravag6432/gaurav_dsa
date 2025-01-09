@@ -1,0 +1,35 @@
+https://www.geeksforgeeks.org/problems/subset-sums2234/1
+
+Given a array arr of integers, return the sums of all subsets in the list.  Return the sums in any order.
+
+Example 1:
+Input: arr[] = [2, 3]
+Output: [0, 2, 3, 5]
+Explanation: When no elements are taken then Sum = 0. When only 2 is taken then Sum = 2. 
+When only 3 is taken then Sum = 3. When elements 2 and 3 are taken then Sum = 2+3 = 5.
+
+Example 2:
+Input: arr[] = [1, 2, 1]
+Output: [0, 1, 1, 2, 2, 3, 3, 4]
+Explanation: The possible subset sums are 0 (no elements), 1 (either of the 1's), 2 (the element 2), and their combinations.
+
+# JAVA Soln--
+
+class Solution {
+    void function1(int[] arr,int i,int n,int sum,ArrayList<Integer> ans){
+        if(i>=n) {
+        // Base case: when index reaches the end of the array, return
+            ans.add(sum);
+            return;
+        }
+        function1(arr,i+1,n,sum,ans);
+        sum+=arr[i];
+        function1(arr,i+1,n,sum,ans);
+    }
+    public ArrayList<Integer> subsetSums(int[] arr) {
+        int n= arr.length;
+        ArrayList<Integer> ans = new ArrayList<>();
+        function1(arr,0,n,0,ans);
+        Collections.sort(ans);
+        return ans;
+}}
