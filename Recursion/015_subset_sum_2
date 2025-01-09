@@ -13,6 +13,33 @@ Output: [[],[0]]
 
 # JAVA Soln--
 
+1. Brute(my soln)--
+
+class Solution {
+    void subset(int i,int n,HashSet<List<Integer>> ans,List<Integer> temp,int[] nums){
+        if(i==n){
+            ans.add(new ArrayList<>(temp));
+            return;
+        }
+        subset(i+1,n,ans,temp,nums);
+        temp.add(nums[i]);
+        subset(i+1,n,ans,temp,nums);
+        temp.remove(temp.size() - 1);
+    }
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        Arrays.sort(nums);
+        int n= nums.length;
+        HashSet<List<Integer>> ans = new HashSet<>();
+        List<Integer> temp= new ArrayList<>();
+        subset(0,n,ans,temp,nums);
+        List<List<Integer>> ans2 = new ArrayList<>(ans);
+        return ans2;
+}}
+
+2.
+
+
+3. Using DP--
 public class Solution {
     public static boolean isSubsetPresent(int n, int K,int []A) {
             boolean[] dp = new boolean[K + 1];
