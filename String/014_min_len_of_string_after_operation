@@ -38,7 +38,7 @@ class Solution {
         return ans;
 }}
 
-#JAVA Soln 2 better (using array)--
+#JAVA Soln 2 optimal (using array)--
 
 class Solution {
     public int minimumLength(String s) {
