@@ -22,35 +22,32 @@ Explanation:
 2 + 3 + 4 = 9
 There are no other valid combinations.
 
-#JAVA soln 1
+#JAVA soln 1 (using while loop)
 
 class Solution {
-    void function(int i,int var, int k, int n, List<List<Integer>>ans, List<Integer> temp){
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        List<List<Integer>> ans = new ArrayList<>();
+        List<Integer> temp = new ArrayList<>();
+        function(1,k,n,ans,temp);
+        return ans;
+    }
+
+    void function(int i, int k, int n, List<List<Integer>>ans, List<Integer> temp){
         if(temp.size()==k){
-            if (n==var) ans.add(new ArrayList<Integer>(temp));
+            if (n==0) ans.add(new ArrayList<Integer>(temp));
             return;
         }
         while(i<=9){
-            var+=i;
-            if(var > n) return;
+            if(n < i) return;
             temp.add(i);
-            i+=1;
-            function(i,var,k,n,ans,temp);
-            int j= temp.size();
-            var=var-temp.get(j-1);
-            temp.remove(j - 1);
+            function(i+1,k,n-i,ans,temp);
+            temp.remove(temp.size() - 1);
+            i++;
         }
     }
-    public List<List<Integer>> combinationSum3(int k, int n) {
-        List<List<Integer>> ans = new ArrayList<>();
-        int i=1,var=0;
-        List<Integer> temp = new ArrayList<>();
-        function(i,var,k,n,ans,temp);
-        return ans;
-    }
+    
 }
-
-# soln 2
+# soln 2 (using for loop)
 
 class Solution {
     public List<List<Integer>> combinationSum3(int k, int n) {
