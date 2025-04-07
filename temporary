@@ -22,3 +22,26 @@ Scanner input = new Scanner(System.in); // takes input from the keyboard
     String d = input.nextLine();  // returns next line in string
     boolean e = input.hasNextInt(); //checks if next input is a integer & returns true/false
 ________________________________________________________________________
+
+# Lambda Expression: To convert any function into lambda function: -
+
+i) Remove modifier, return type and method name
+ii) Add "->" between body and parameter
+
+Ex: private void add(int a,int b){
+        return (a+b);
+    }
+
+The Lambda expression of the above function would be: -
+    (int a,int b) -> {return (a+b);}
+
+Moreover
+i) Outermost brackets could be removed if it's single statement
+ii) return keyword could be removed
+iii) input type could be removed
+
+Hence the code would look like: -
+(a,b) -> (a+b);
+
+Therefore the code looks more redable and concise..
+________________________________________________________________________
