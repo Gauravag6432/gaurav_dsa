@@ -1,15 +1,16 @@
 Find Second Smallest and Second Largest Element in an array
 
-def getElements(arr, n):
-    if n == 0 or n == 1:
-        print(-1, -1)  # edge case when only one element is present in array
-    arr.sort()
-    small = arr[1]
-    large = arr[n-2]
-    print("Second smallest is", small)
-    print("Second largest is", large)
 
-if __name__ == '__main__':
-    arr = [1, 2, 4, 6, 7, 5]
-    n = len(arr)
-    getElements(arr, n)
+public static void getElements(int[] arr, int n) {
+    if (n == 0 || n == 1) {
+        System.out.println("-1 -1"); // edge case handling
+        return;
+    }
+    
+    Arrays.sort(arr);
+    int small = arr[1];
+    int large = arr[n - 2];
+    
+    System.out.println("Second smallest is " + small);
+    System.out.println("Second largest is " + large);
+}
