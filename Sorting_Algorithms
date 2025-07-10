@@ -1,0 +1,126 @@
+Given an array of N integers, write a program to implement the sorting algorithms.
+
+Example: Input: N = 6, array[] = {13,46,24,52,20,9}
+Output: 9,13,20,24,46,52
+Explanation: After sorting the array is: 9, 13, 20, 24, 46, 52
+
+# Selection Sort-
+
+    static void selection_sort(int arr[], int n) {
+        for (int i = 0; i < n - 1; i++) {
+            int mini = i;
+            for (int j = i + 1; j < n; j++) {
+                if (arr[j] < arr[mini]) {
+                    mini = j;
+                }
+            }
+            //swap
+            int temp = arr[mini];
+            arr[mini] = arr[i];
+            arr[i] = temp;
+        }
+
+TC: O(N2), (where N = size of the array), for the best, worst, and average cases.
+https://takeuforward.org/sorting/selection-sort-algorithm/
+______________________________________________________________________
+
+# Bubble Sort-
+
+static void bubble_sort(int[] arr, int n) {
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = 0; j <= i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+
+Time complexity: O(N2), (where N = size of the array), for the worst, and average cases.
+
+Optimized approach (Reducing time complexity for the best case to O(N) by just adding a small check inside the loops. -
+
+static void bubble_sort(int[] arr, int n) {
+        for (int i = n - 1; i >= 0; i--) {
+            int didSwap = 0;
+
+            for (int j = 0; j <= i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                    didSwap = 1;
+                }
+            }
+            if (didSwap == 0) {
+                break;
+            }
+        }
+
+https://takeuforward.org/data-structure/bubble-sort-algorithm/
+______________________________________________________________________
+
+# Insertion Sort-
+
+static void insertion_sort(int[] arr, int n) {
+        for (int i = 0; i <= n - 1; i++) {
+            int j = i;
+            while (j > 0 && arr[j - 1] > arr[j]) {
+                int temp = arr[j - 1];
+                arr[j - 1] = arr[j];
+                arr[j] = temp;
+                j--;
+            }
+        }
+
+Time complexity: O(N2), (where N = size of the array), for the worst, and average cases.
+The best case occurs if the given array is already sorted. Hence TC will boil down to O(N), where N = size of the array.
+https://takeuforward.org/data-structure/insertion-sort-algorithm/
+
+______________________________________________________________________
+# Merge Sort
+
+class Solution {
+    private static void merge(int[] arr, int low, int mid, int high) {
+        ArrayList<Integer> temp = new ArrayList<>(); // temporary array
+        int left = low;      // starting index of left half of arr
+        int right = mid + 1;   // starting index of right half of arr
+
+        //storing elements in the temporary array in a sorted manner//
+        while (left <= mid && right <= high) {
+            if (arr[left] <= arr[right]) {
+                temp.add(arr[left]);
+                left++;
+            } else {
+                temp.add(arr[right]);
+                right++;
+            }}
+
+        // if elements on the left half are still left //
+        while (left <= mid) {
+            temp.add(arr[left]);
+            left++;
+        }
+        //  if elements on the right half are still left //
+        while (right <= high) {
+            temp.add(arr[right]);
+            right++;
+        }
+        // transfering all elements from temporary to arr //
+        for (int i = low; i <= high; i++) {
+            arr[i] = temp.get(i - low);
+        }}
+
+    public static void mergeSort(int[] arr, int low, int high) {
+        if (low >= high) return;
+        int mid = (low + high) / 2 ;
+        mergeSort(arr, low, mid);  // left half
+        mergeSort(arr, mid + 1, high); // right half
+        merge(arr, low, mid, high);  // merging sorted halves
+    }
+}
+
+Time complexity: O(nlogn),  Reason: At each step, we divide the whole array, 
+for that logn and we assume n steps are taken to get a sorted array, so overall time complexity will be nlogn
+Space complexity: O(n), Reason: We are using a temporary array to store elements in sorted order.
