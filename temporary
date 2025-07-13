@@ -46,13 +46,16 @@ Hence the code would look like: -
 Therefore the code looks more redable and concise..
 ________________________________________________________________________
 
-Length(size)
+Length and other imp func.
 
 int[] arr = {1, 2, 3, 4, 5};
 int size = arr.length; 
+Arrays.sort(nums);
 
 List<Integer> list = new ArrayList<>();
 int size = list.size();
 
 String str = "Hello World";
 int length = str.length();
+
+maxc = Math.max(maxc, count);
