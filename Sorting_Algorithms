@@ -91,7 +91,7 @@ The best case occurs if the given array is already sorted. Hence TC will boil do
 https://takeuforward.org/data-structure/insertion-sort-algorithm/
 
 ______________________________________________________________________
-# Merge Sort
+# Merge Sort (Divide & Merge)
 
 class Solution {
     private static void merge(int[] arr, int low, int mid, int high) {
