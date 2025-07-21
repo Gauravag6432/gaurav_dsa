@@ -47,7 +47,7 @@ class Solution {
         return ans;  
     }}
 
-#soln 3 Optimal(for loop)
+#soln 3 (for loop)
 
 class Solution {
     public int searchInsert(int[] nums, int target) {
