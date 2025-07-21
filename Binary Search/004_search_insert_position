@@ -46,3 +46,18 @@ class Solution {
         }
         return ans;  
     }}
+
+#soln 3 Optimal(for loop)
+
+class Solution {
+    public int searchInsert(int[] nums, int target) {
+        int n= nums.length;
+        for(int i = 0; i< n; i++){
+            int ans = nums[i];
+            if(ans==target) return i;
+            else if (ans<target) continue;
+            else return i;
+        }
+        return n;
+    }
+}
