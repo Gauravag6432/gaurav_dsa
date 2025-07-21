@@ -1,0 +1,49 @@
+
+#Soln 1 Brute (O(2N)) SC: O(N)
+public static Node reverseLinkedList(Node head) {
+    Node temp = head;       
+    Stack<Integer> stack = new Stack<>();   // Create a stack to temporarily store the data values
+// Step 1: Push the values of the linked list onto the stack
+    while (temp != null) {   
+        stack.push(temp.data);  // Push the current node's data onto the stack
+        temp = temp.next;        // Move to the next node in the linked list
+    }
+    temp = head;  
+// Step 2: Pop values from the stack and update the linked list
+    while (temp != null) {
+        temp.data = stack.pop();  // Set the current node's data to the value at the top of the stack
+        temp = temp.next;         // Move to the next node in the linked list
+    }
+    return head;  // Return the new head of the reversed linked list
+}
+
+#Soln 2 optimal(O(N)) SC: O(1)
+
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        ListNode prev = null, curr = head, next= null;
+        while (curr != null) {
+            next = curr.next;     // Save next node!
+            curr.next = prev;     // Reverse link
+            prev = curr;          // Move prev forward
+            curr = next;          // Move curr forward
+        }
+        return prev;
+    }
+}
+
+#Soln 3 Recursive optimal(O(N)) SC: O(1)
+
+class Solution {
+    public ListNode reverseList(ListNode head){
+        if (head == null || head.next == null){ // Base case:If the linked list is empty or has only one node
+            return head;
+        }
+        ListNode newHead = reverseList(head.next);
+
+        ListNode front = head.next; // Save a reference to the node following the current 'head' node.
+        front.next = head; // Make the 'front' node point to the current 'head' node in the reversed order.
+        head.next = null; // Break the link from the current 'head' node to the 'front' node to avoid cycles.
+        return newHead; // Return the 'newHead,' which is the new head of the reversed linked list.
+    }
+}
