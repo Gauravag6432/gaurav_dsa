@@ -59,3 +59,10 @@ String str = "Hello World";
 int length = str.length();
 
 maxc = Math.max(maxc, count);
+
+________________________________________________________________________
+#Type casting 
+int divident = 99; //32 bit space
+long n = Math.abs((long)dividend); //64 bit space
+long m = (long) dividend;
+________________________________________________________________________
