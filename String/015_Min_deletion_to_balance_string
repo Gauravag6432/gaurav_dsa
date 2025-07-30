@@ -1,0 +1,59 @@
+https://leetcode.com/problems/minimum-deletions-to-make-string-balanced/description/
+You are given a string s consisting only of characters 'a' and 'b'​​​​.
+You can delete any number of characters in s to make s balanced.
+s is balanced if there is no pair of indices (i,j) such that i < j and s[i] = 'b' and s[j]= 'a'.
+Return the minimum number of deletions needed to make s balanced.
+
+Example 1:
+Input: s = "aababbab"
+Output: 2
+Explanation: You can either:
+Delete the characters at 0-indexed positions 2 and 6 ("aababbab" -> "aaabbb"), or
+Delete the characters at 0-indexed positions 3 and 6 ("aababbab" -> "aabbbb").
+
+Example 2:
+Input: s = "bbaaaaabb"
+Output: 2
+Explanation: The only solution is to delete the first two characters.
+------------------------------------------------------------------------
+
+#Java Soln 1
+
+class Solution {
+    public static int minimumDeletions(String s) {
+        int min_deletions = 0;  // The minimum deletions needed so far.
+        int b_count = 0;  // The number of 'b's we have encountered.
+
+        for (char c : s.toCharArray()) {
+            if (c == 'b') {
+                // This 'b' could potentially be part of a valid "bbb" suffix.
+                b_count++;
+            } else { 
+                // c == 'a', This 'a' appears after some 'b's, creating an invalid "b...a" sequence.
+                // We have two choices:
+                // 1. Delete this 'a'. Cost: The deletions we've already done + 1.
+                // 2. Keep this 'a' and delete all the 'b's seen so far. Cost: b_count.
+                // We choose the minimum of these two options.
+                min_deletions = Math.min(min_deletions + 1, b_count);
+            }
+        }
+        return min_deletions;
+    }
+}
+------------------------------------------------
+# Java Soln 2
+
+class Solution {
+    public int minimumDeletions(String s) {
+        int res = 0, count = 0;
+        for (char c : s.toCharArray()){
+            if (c == 'b')
+                count++;
+            else if (count != 0){
+                res++;
+                count--;
+            }
+        }
+        return res;
+    }
+}
