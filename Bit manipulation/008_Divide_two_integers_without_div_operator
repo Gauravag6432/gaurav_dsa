@@ -18,11 +18,8 @@ Explanation: 7/-3 = -2.33333.. which is truncated to -2.
 class Solution {
     public int divide(int dividend, int divisor) {
         if(dividend == divisor) return 1;
-        if (dividend == Integer.MIN_VALUE && divisor == -1) {
-            return Integer.MAX_VALUE;
-        }
-        if(divisor == 1) return dividend;
-        if(dividend == -1) return -dividend;
+        if (dividend == Integer.MIN_VALUE && divisor == -1) return Integer.MAX_VALUE;
+     
         int sign = 1;
         if(dividend>0 && divisor<0) sign = -1;
         if(dividend<0 && divisor>0) sign = -1;
@@ -33,12 +30,11 @@ class Solution {
         while(n>=d)
         {
             int p = 0;
-            while(n >= d<<p)
-            p++;
+            while(n >= d<<p) p++;
 
             p--;
-            n -= d<<p;
-            ans += 1<<p;
+            n -= (d<<p);
+            ans += (1<<p);
         }
         if(ans>=Math.pow(2,31) && sign==1) return Integer.MAX_VALUE;
         if(ans>=Math.pow(2,31) && sign==-1) return Integer.MIN_VALUE;
