@@ -42,6 +42,7 @@ iii) input type could be removed
 
 Hence the code would look like: -
 (a,b) -> (a+b);
+Syntax: (argument list) -> { body of the expression }
 
 Therefore the code looks more redable and concise..
 ________________________________________________________________________
