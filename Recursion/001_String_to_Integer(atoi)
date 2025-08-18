@@ -1,5 +1,6 @@
-Implement the myAtoi(string s) function, which converts a string to a 32-bit signed integer.
+https://leetcode.com/problems/string-to-integer-atoi/description/
 
+Implement the myAtoi(string s) function, which converts a string to a 32-bit signed integer.
 The algorithm for myAtoi(string s) is as follows:
 
 1. Whitespace: Ignore any leading whitespace (" ").
@@ -19,16 +20,15 @@ Step 2: "1337c0d3" (no characters read because there is neither a '-' nor '+')
 Step 3: "1337c0d3" ("1337" is read in; reading stops because the next character is a non-digit)
 Problem: https://leetcode.com/problems/string-to-integer-atoi/description/
 
-#1 soln
+# Java soln-
+
 class Solution {
     public int myAtoi(String s) {
         int i = 0, sign = 1, result = 0;
         int n = s.length();
-        
+
         // Step 1: Ignore leading whitespace
-        while (i < n && s.charAt(i) == ' ') {
-            i++;
-        }
+        while (i < n && s.charAt(i) == ' ') i++;
         
         // Step 2: Determine the sign
         if (i < n && (s.charAt(i) == '+' || s.charAt(i) == '-')) {
@@ -44,11 +44,9 @@ class Solution {
             if (result > (Integer.MAX_VALUE - digit) / 10) {
                 return (sign == 1) ? Integer.MAX_VALUE : Integer.MIN_VALUE;
             }
-            
             result = result * 10 + digit;
             i++;
         }
-
         // Step 5: Apply the sign
         return result * sign;
     }
