@@ -1,0 +1,41 @@
+https://leetcode.com/problems/word-search/
+
+Given an m x n grid of characters board and a string word, return true if word exists in the grid.
+The word can be constructed from letters of sequentially adjacent cells,
+where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.
+Example:
+Input: word = "ABCCED", 
+board = 
+[["A","B","C","E"],
+ ["S","F","C","S"],
+ ["A","D","E","E"]]
+Output: true, 
+Explai: We can easily find the given word in the matrix.
+
+# Java Soln (backtracking brute force)
+
+class Solution {
+    public boolean exist(char[][] board, String word) {
+        // Try starting from each cell in the board
+        for (int i = 0; i < oard.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (dfs(board, word, i, j, 0)) return true;
+            }
+        }
+        return false;
+    }
+    private boolean dfs(char[][] board, String word, int i, int j, int index) {
+        if (index == word.length()) return true;  // Base case: found the complete word
+        if (i < 0 || i >= board.length || j < 0 || j >= board[0].length) return false;  // Check boundaries
+        if (board[i][j] != word.charAt(index)) return false;   // Check if current cell matches the current character
+        char temp = board[i][j];   // Mark current cell as visited (backtracking)
+        board[i][j] = '*';   // Mark as visited
+        // Explore all 4 directions
+        boolean found = dfs(board, word, i + 1, j, index + 1) ||
+                       dfs(board, word, i - 1, j, index + 1) ||
+                       dfs(board, word, i, j + 1, index + 1) ||
+                       dfs(board, word, i, j - 1, index + 1);
+        board[i][j] = temp; // Backtrack: restore the original character
+        return found;
+    }
+}
