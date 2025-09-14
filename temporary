@@ -51,7 +51,7 @@ Length and other imp func.
 
 int[] arr = {1, 2, 3, 4, 5};
 int size = arr.length; 
-Arrays.sort(nums);
+Arrays.sort(arr);
 
 List<Integer> list = new ArrayList<>();
 int size = list.size();
