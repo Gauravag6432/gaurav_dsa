@@ -55,6 +55,7 @@ Arrays.sort(arr);
 
 List<Integer> list = new ArrayList<>();
 int size = list.size();
+Collections.sort(list);
 
 String str = "Hello World";
 int length = str.length();
